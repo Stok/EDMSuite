@@ -4,7 +4,7 @@ namespace DAQ.Pattern.Test
 {
 	public class PatternBuilderTest
 	{
-
+        /*
 		[STAThread]
 		public static void Main() 
 		{
@@ -18,6 +18,6 @@ namespace DAQ.Pattern.Test
 			Console.WriteLine(p.LayoutToString());
 			Console.WriteLine(p.ArrayToString());
 		}
-
+        */
 	}
 }

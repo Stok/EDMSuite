@@ -28,8 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.lockParams = new System.Windows.Forms.GroupBox();
-            this.lockedLED = new NationalInstruments.UI.WindowsForms.Led();
             this.label10 = new System.Windows.Forms.Label();
             this.setPointIncrementBox = new System.Windows.Forms.TextBox();
             this.GainTextbox = new System.Windows.Forms.TextBox();
@@ -41,31 +45,22 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.SlaveLaserIntensityScatterGraph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.SlaveDataPlot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis1 = new NationalInstruments.UI.XAxis();
-            this.yAxis1 = new NationalInstruments.UI.YAxis();
-            this.SlaveFitPlot = new NationalInstruments.UI.ScatterPlot();
+            this.VoltageTrackBar = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.ErrorScatterGraph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.ErrorPlot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis2 = new NationalInstruments.UI.XAxis();
-            this.yAxis2 = new NationalInstruments.UI.YAxis();
+            this.ErrorChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.SlaveLaserIntensityChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.slErrorResetButton = new System.Windows.Forms.Button();
-            this.VoltageTrackBar = new System.Windows.Forms.TrackBar();
             this.lockParams.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lockedLED)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SlaveLaserIntensityScatterGraph)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ErrorScatterGraph)).BeginInit();
-            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VoltageTrackBar)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SlaveLaserIntensityChart)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lockParams
             // 
-            this.lockParams.Controls.Add(this.lockedLED);
             this.lockParams.Controls.Add(this.label10);
             this.lockParams.Controls.Add(this.setPointIncrementBox);
             this.lockParams.Controls.Add(this.GainTextbox);
@@ -78,20 +73,12 @@
             this.lockParams.Controls.Add(this.label2);
             this.lockParams.Controls.Add(this.label3);
             this.lockParams.Controls.Add(this.VoltageTrackBar);
-            this.lockParams.Location = new System.Drawing.Point(589, 3);
+            this.lockParams.Location = new System.Drawing.Point(626, 3);
             this.lockParams.Name = "lockParams";
-            this.lockParams.Size = new System.Drawing.Size(355, 162);
+            this.lockParams.Size = new System.Drawing.Size(318, 186);
             this.lockParams.TabIndex = 13;
             this.lockParams.TabStop = false;
             this.lockParams.Text = "Lock Parameters";
-            // 
-            // lockedLED
-            // 
-            this.lockedLED.LedStyle = NationalInstruments.UI.LedStyle.Round3D;
-            this.lockedLED.Location = new System.Drawing.Point(310, 6);
-            this.lockedLED.Name = "lockedLED";
-            this.lockedLED.Size = new System.Drawing.Size(32, 30);
-            this.lockedLED.TabIndex = 34;
             // 
             // label10
             // 
@@ -196,79 +183,67 @@
             this.label3.TabIndex = 13;
             this.label3.Text = "Set Point (V):";
             // 
-            // SlaveLaserIntensityScatterGraph
+            // VoltageTrackBar
             // 
-            this.SlaveLaserIntensityScatterGraph.Location = new System.Drawing.Point(9, 17);
-            this.SlaveLaserIntensityScatterGraph.Name = "SlaveLaserIntensityScatterGraph";
-            this.SlaveLaserIntensityScatterGraph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.SlaveDataPlot,
-            this.SlaveFitPlot});
-            this.SlaveLaserIntensityScatterGraph.Size = new System.Drawing.Size(567, 132);
-            this.SlaveLaserIntensityScatterGraph.TabIndex = 12;
-            this.SlaveLaserIntensityScatterGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis1});
-            this.SlaveLaserIntensityScatterGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.yAxis1});
-            // 
-            // SlaveDataPlot
-            // 
-            this.SlaveDataPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.SlaveDataPlot.PointSize = new System.Drawing.Size(3, 3);
-            this.SlaveDataPlot.PointStyle = NationalInstruments.UI.PointStyle.SolidCircle;
-            this.SlaveDataPlot.XAxis = this.xAxis1;
-            this.SlaveDataPlot.YAxis = this.yAxis1;
-            // 
-            // SlaveFitPlot
-            // 
-            this.SlaveFitPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.SlaveFitPlot.PointColor = System.Drawing.Color.LawnGreen;
-            this.SlaveFitPlot.PointStyle = NationalInstruments.UI.PointStyle.EmptyTriangleUp;
-            this.SlaveFitPlot.XAxis = this.xAxis1;
-            this.SlaveFitPlot.YAxis = this.yAxis1;
+            this.VoltageTrackBar.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.VoltageTrackBar.Location = new System.Drawing.Point(6, 135);
+            this.VoltageTrackBar.Maximum = 1000;
+            this.VoltageTrackBar.Name = "VoltageTrackBar";
+            this.VoltageTrackBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.VoltageTrackBar.Size = new System.Drawing.Size(298, 45);
+            this.VoltageTrackBar.TabIndex = 53;
+            this.VoltageTrackBar.Value = 100;
+            this.VoltageTrackBar.Scroll += new System.EventHandler(this.VoltageTrackBar_Scroll);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.ErrorScatterGraph);
-            this.groupBox1.Controls.Add(this.SlaveLaserIntensityScatterGraph);
+            this.groupBox1.Controls.Add(this.ErrorChart);
+            this.groupBox1.Controls.Add(this.SlaveLaserIntensityChart);
             this.groupBox1.Location = new System.Drawing.Point(4, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(582, 286);
+            this.groupBox1.Size = new System.Drawing.Size(616, 310);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Slave laser";
             // 
-            // ErrorScatterGraph
+            // ErrorChart
             // 
-            this.ErrorScatterGraph.Location = new System.Drawing.Point(6, 155);
-            this.ErrorScatterGraph.Name = "ErrorScatterGraph";
-            this.ErrorScatterGraph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.ErrorPlot});
-            this.ErrorScatterGraph.Size = new System.Drawing.Size(570, 125);
-            this.ErrorScatterGraph.TabIndex = 13;
-            this.ErrorScatterGraph.UseColorGenerator = true;
-            this.ErrorScatterGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis2});
-            this.ErrorScatterGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.yAxis2});
+            chartArea1.Name = "ChartArea1";
+            this.ErrorChart.ChartAreas.Add(chartArea1);
+            this.ErrorChart.Location = new System.Drawing.Point(6, 166);
+            this.ErrorChart.Name = "ErrorChart";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Name = "errorPlot";
+            this.ErrorChart.Series.Add(series1);
+            this.ErrorChart.Size = new System.Drawing.Size(604, 138);
+            this.ErrorChart.TabIndex = 55;
+            this.ErrorChart.Text = "chart2";
             // 
-            // ErrorPlot
+            // SlaveLaserIntensityChart
             // 
-            this.ErrorPlot.LineColor = System.Drawing.Color.Red;
-            this.ErrorPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.ErrorPlot.XAxis = this.xAxis2;
-            this.ErrorPlot.YAxis = this.yAxis2;
-            // 
-            // xAxis2
-            // 
-            this.xAxis2.Mode = NationalInstruments.UI.AxisMode.StripChart;
-            this.xAxis2.Range = new NationalInstruments.UI.Range(0D, 500D);
+            chartArea2.Name = "ChartArea1";
+            this.SlaveLaserIntensityChart.ChartAreas.Add(chartArea2);
+            this.SlaveLaserIntensityChart.Location = new System.Drawing.Point(6, 19);
+            this.SlaveLaserIntensityChart.Name = "SlaveLaserIntensityChart";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series2.Name = "slaveDataPlot";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Name = "slaveFitPlot";
+            this.SlaveLaserIntensityChart.Series.Add(series2);
+            this.SlaveLaserIntensityChart.Series.Add(series3);
+            this.SlaveLaserIntensityChart.Size = new System.Drawing.Size(604, 141);
+            this.SlaveLaserIntensityChart.TabIndex = 54;
+            this.SlaveLaserIntensityChart.Text = "chart1";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.slErrorResetButton);
-            this.groupBox2.Location = new System.Drawing.Point(589, 171);
+            this.groupBox2.Location = new System.Drawing.Point(626, 195);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(355, 118);
+            this.groupBox2.Size = new System.Drawing.Size(318, 118);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Error Signal Parameters";
@@ -283,18 +258,6 @@
             this.slErrorResetButton.UseVisualStyleBackColor = true;
             this.slErrorResetButton.Click += new System.EventHandler(this.slErrorResetButton_Click);
             // 
-            // VoltageTrackBar
-            // 
-            this.VoltageTrackBar.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.VoltageTrackBar.Location = new System.Drawing.Point(6, 114);
-            this.VoltageTrackBar.Maximum = 1000;
-            this.VoltageTrackBar.Name = "VoltageTrackBar";
-            this.VoltageTrackBar.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.VoltageTrackBar.Size = new System.Drawing.Size(343, 45);
-            this.VoltageTrackBar.TabIndex = 53;
-            this.VoltageTrackBar.Value = 100;
-            this.VoltageTrackBar.Scroll += new System.EventHandler(this.VoltageTrackBar_Scroll);
-            // 
             // LockControlPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,15 +267,14 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "LockControlPanel";
-            this.Size = new System.Drawing.Size(952, 294);
+            this.Size = new System.Drawing.Size(952, 316);
             this.lockParams.ResumeLayout(false);
             this.lockParams.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lockedLED)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.SlaveLaserIntensityScatterGraph)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ErrorScatterGraph)).EndInit();
-            this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.VoltageTrackBar)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SlaveLaserIntensityChart)).EndInit();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -331,19 +293,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        public NationalInstruments.UI.WindowsForms.ScatterGraph SlaveLaserIntensityScatterGraph;
-        public NationalInstruments.UI.ScatterPlot SlaveDataPlot;
-        private NationalInstruments.UI.XAxis xAxis1;
-        private NationalInstruments.UI.YAxis yAxis1;
-        public NationalInstruments.UI.ScatterPlot SlaveFitPlot;
         private System.Windows.Forms.GroupBox groupBox1;
-        private NationalInstruments.UI.WindowsForms.Led lockedLED;
-        private NationalInstruments.UI.WindowsForms.ScatterGraph ErrorScatterGraph;
-        private NationalInstruments.UI.ScatterPlot ErrorPlot;
-        private NationalInstruments.UI.XAxis xAxis2;
-        private NationalInstruments.UI.YAxis yAxis2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button slErrorResetButton;
         public System.Windows.Forms.TrackBar VoltageTrackBar;
+        private System.Windows.Forms.DataVisualization.Charting.Chart ErrorChart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart SlaveLaserIntensityChart;
     }
 }

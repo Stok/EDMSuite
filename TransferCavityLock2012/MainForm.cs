@@ -6,9 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-
-using NationalInstruments.UI.WindowsForms;
-using NationalInstruments.UI;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace TransferCavityLock2012
 {
@@ -65,14 +63,12 @@ namespace TransferCavityLock2012
                     rampStartButton.Enabled = true;
                     rampStopButton.Enabled = false;
                     NumberOfScanpointsTextBox.Enabled = true;
-                    rampLED.Value = false;
                     break;
 
                 case Controller.ControllerState.RUNNING:
                     rampStartButton.Enabled = false;
                     rampStopButton.Enabled = true;
                     NumberOfScanpointsTextBox.Enabled = false;
-                    rampLED.Value = true;
                     break;
             }
         }
@@ -106,16 +102,6 @@ namespace TransferCavityLock2012
             box.Text = text;
         }
 
-        public void SetLED(Led led, bool val)
-        {
-            led.Invoke(new SetLedDelegate(SetLedHelper), new object[] { led, val });
-        }
-        private delegate void SetLedDelegate(Led led, bool val);
-        private void SetLedHelper(Led led, bool val)
-        {
-            led.Value = val;
-        }
-
         public void EnableControl(Control control, bool enabled)
         {
             control.Invoke(new EnableControlDelegate(EnableControlHelper), new object[] { control, enabled });
@@ -127,21 +113,57 @@ namespace TransferCavityLock2012
         }
 
 
-        private delegate void plotScatterGraphDelegate(ScatterPlot plot,double[] x, double[] y);
-        private void plotScatterGraphHelper(ScatterPlot plot,
+
+        private delegate void plotSeriesDelegate(Series plot,
+           double[] x, double[] y);
+        private void plotSeriesHelper(Series plot,
             double[] x, double[] y)
         {
             lock (this)
             {
-                plot.ClearData();
-                plot.PlotXY(x, y);
-             }
+                plot.Points.Clear();
+                for (int i = 0; i < x.Length; i++)
+                {
+                    plot.Points.AddXY(x[i], y[i]);
+                }
+                plot.Sort(PointSortOrder.Ascending, "X");
+            }
+        }
+        private void seriesPlot(Chart figure, Series plot, double[] x, double[] y)
+        {
+            figure.Invoke(new plotSeriesDelegate(plotSeriesHelper), new object[] { plot, x, y });
         }
 
 
-        private void scatterGraphPlot(ScatterGraph graph, ScatterPlot plot, double[] x, double[] y)
+
+        private delegate void seriesAppendDelegate(Series plot, double[] x, double[] y);
+
+        private void seriesAppendHelper(Series plot, double[] x, double[] y)
         {
-            graph.Invoke(new plotScatterGraphDelegate(plotScatterGraphHelper), new object[] {plot, x, y });
+            lock (this)
+            {
+                for (int i = 0; i < x.Length; i++)
+                {
+                    plot.Points.AddXY(x[i], y[i]);
+                }
+                plot.Sort(PointSortOrder.Ascending, "X");
+            }
+        }
+        private void plotXYAppend(Chart figure, Series plot, double[] x, double[] y)
+        {
+            figure.Invoke(new seriesAppendDelegate(seriesAppendHelper), new Object[] { x, y });
+        }
+
+
+
+        private delegate void ClearDataDelegate(Series plot);
+        private void clearSeries(Chart graph, Series plot)
+        {
+            graph.Invoke(new ClearDataDelegate(clearSeriesHelper));
+        }
+        private void clearSeriesHelper(Series plot)
+        {
+            plot.Points.Clear();
         }
 
       
@@ -186,16 +208,16 @@ namespace TransferCavityLock2012
         #region Displaying Data
         public void DisplayCavityData(double[] indeces, double[] cavityData)
         {
-            scatterGraphPlot(CavityVoltageReadScatterGraph, cavityDataPlot, indeces, cavityData);
+            seriesPlot(CavityVoltageChart, CavityVoltageChart.Series.FindByName("cavityVoltagePlot"), indeces, cavityData);
         }
         public void DisplayMasterData(double[] cavityData, double[] masterData, double[] masterFitData)
         {
-            scatterGraphPlot(MasterLaserIntensityScatterGraph, MasterDataPlot, cavityData, masterData);
-            scatterGraphPlot(MasterLaserIntensityScatterGraph, MasterFitPlot, cavityData, masterFitData);
+            seriesPlot(MasterLaserIntensityChart, MasterLaserIntensityChart.Series.FindByName("masterDataPlot"), cavityData, masterData);
+            seriesPlot(MasterLaserIntensityChart, MasterLaserIntensityChart.Series.FindByName("masterFitPlot"), cavityData, masterFitData);
         }
         public void DisplayMasterData(double[] cavityData, double[] masterData)
         {
-            scatterGraphPlot(MasterLaserIntensityScatterGraph, MasterDataPlot, cavityData, masterData);
+            seriesPlot(MasterLaserIntensityChart, MasterLaserIntensityChart.Series.FindByName("masterDataPlot"), cavityData, masterData);
         }
 
         public void DisplaySlaveData(string name, double[] cavityData, double[] slaveData, double[] slaveFitData)

@@ -71,7 +71,7 @@ namespace TransferCavityLock2012
             
             string[] lockableLasers = (string[])Environs.Hardware.GetInfo("TCLLockableLasers");
             photodiodes = (string[])Environs.Hardware.GetInfo("TCLPhotodiodes");
-            if ((double)Environs.Hardware.GetInfo("TCL_Default_VoltageToLaser") != null)
+            if ((double)Environs.Hardware.GetInfo("TCL_Default_VoltageToLaser") != 0.0)
             {
                 default_ScanPoints = (int)Environs.Hardware.GetInfo("TCL_Default_ScanPoints");
             }
@@ -553,7 +553,8 @@ namespace TransferCavityLock2012
         /// <param name="sp"></param>
         private void initializeAIHardware(ScanParameters sp)
         {
-            tcl.ConfigureReadAI(sp.Steps, false);
+            //tcl.ConfigureReadAI(sp.Steps, false);
+            tcl.ConfigureReadAI(sp.Steps, (bool)Environs.Hardware.GetInfo("TCLReadAutostart"));
         }
 
         

@@ -28,21 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.voltageRampControl = new System.Windows.Forms.GroupBox();
-            this.rampLED = new NationalInstruments.UI.WindowsForms.Led();
             this.rampStopButton = new System.Windows.Forms.Button();
             this.rampStartButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.NumberOfScanpointsTextBox = new System.Windows.Forms.TextBox();
-            this.MasterLaserIntensityScatterGraph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.MasterDataPlot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis2 = new NationalInstruments.UI.XAxis();
-            this.yAxis2 = new NationalInstruments.UI.YAxis();
-            this.MasterFitPlot = new NationalInstruments.UI.ScatterPlot();
-            this.CavityVoltageReadScatterGraph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.cavityDataPlot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis3 = new NationalInstruments.UI.XAxis();
-            this.yAxis3 = new NationalInstruments.UI.YAxis();
             this.slaveLasersTab = new System.Windows.Forms.TabControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,18 +54,18 @@
             this.label6 = new System.Windows.Forms.Label();
             this.CavLockVoltageTrackBar = new System.Windows.Forms.TrackBar();
             this.label7 = new System.Windows.Forms.Label();
+            this.CavityVoltageChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.MasterLaserIntensityChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.voltageRampControl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rampLED)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MasterLaserIntensityScatterGraph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CavityVoltageReadScatterGraph)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CavLockVoltageTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CavityVoltageChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MasterLaserIntensityChart)).BeginInit();
             this.SuspendLayout();
             // 
             // voltageRampControl
             // 
-            this.voltageRampControl.Controls.Add(this.rampLED);
             this.voltageRampControl.Controls.Add(this.rampStopButton);
             this.voltageRampControl.Controls.Add(this.rampStartButton);
             this.voltageRampControl.Controls.Add(this.label5);
@@ -81,15 +76,6 @@
             this.voltageRampControl.TabIndex = 2;
             this.voltageRampControl.TabStop = false;
             this.voltageRampControl.Text = "Analog Inputs";
-            // 
-            // rampLED
-            // 
-            this.rampLED.LedStyle = NationalInstruments.UI.LedStyle.Round3D;
-            this.rampLED.Location = new System.Drawing.Point(318, 13);
-            this.rampLED.Name = "rampLED";
-            this.rampLED.OffColor = System.Drawing.Color.Red;
-            this.rampLED.Size = new System.Drawing.Size(31, 29);
-            this.rampLED.TabIndex = 7;
             // 
             // rampStopButton
             // 
@@ -127,57 +113,6 @@
             this.NumberOfScanpointsTextBox.Size = new System.Drawing.Size(57, 20);
             this.NumberOfScanpointsTextBox.TabIndex = 22;
             // 
-            // MasterLaserIntensityScatterGraph
-            // 
-            this.MasterLaserIntensityScatterGraph.Location = new System.Drawing.Point(6, 19);
-            this.MasterLaserIntensityScatterGraph.Name = "MasterLaserIntensityScatterGraph";
-            this.MasterLaserIntensityScatterGraph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.MasterDataPlot,
-            this.MasterFitPlot});
-            this.MasterLaserIntensityScatterGraph.Size = new System.Drawing.Size(548, 130);
-            this.MasterLaserIntensityScatterGraph.TabIndex = 5;
-            this.MasterLaserIntensityScatterGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis2});
-            this.MasterLaserIntensityScatterGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.yAxis2});
-            // 
-            // MasterDataPlot
-            // 
-            this.MasterDataPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.MasterDataPlot.PointSize = new System.Drawing.Size(2, 2);
-            this.MasterDataPlot.PointStyle = NationalInstruments.UI.PointStyle.SolidCircle;
-            this.MasterDataPlot.XAxis = this.xAxis2;
-            this.MasterDataPlot.YAxis = this.yAxis2;
-            // 
-            // MasterFitPlot
-            // 
-            this.MasterFitPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.MasterFitPlot.PointColor = System.Drawing.Color.LawnGreen;
-            this.MasterFitPlot.PointStyle = NationalInstruments.UI.PointStyle.EmptyTriangleUp;
-            this.MasterFitPlot.XAxis = this.xAxis2;
-            this.MasterFitPlot.YAxis = this.yAxis2;
-            // 
-            // CavityVoltageReadScatterGraph
-            // 
-            this.CavityVoltageReadScatterGraph.Location = new System.Drawing.Point(6, 19);
-            this.CavityVoltageReadScatterGraph.Name = "CavityVoltageReadScatterGraph";
-            this.CavityVoltageReadScatterGraph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.cavityDataPlot});
-            this.CavityVoltageReadScatterGraph.Size = new System.Drawing.Size(548, 130);
-            this.CavityVoltageReadScatterGraph.TabIndex = 13;
-            this.CavityVoltageReadScatterGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis3});
-            this.CavityVoltageReadScatterGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.yAxis3});
-            // 
-            // cavityDataPlot
-            // 
-            this.cavityDataPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.cavityDataPlot.PointSize = new System.Drawing.Size(2, 2);
-            this.cavityDataPlot.PointStyle = NationalInstruments.UI.PointStyle.SolidCircle;
-            this.cavityDataPlot.XAxis = this.xAxis3;
-            this.cavityDataPlot.YAxis = this.yAxis3;
-            // 
             // slaveLasersTab
             // 
             this.slaveLasersTab.Location = new System.Drawing.Point(12, 338);
@@ -188,7 +123,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.CavityVoltageReadScatterGraph);
+            this.groupBox1.Controls.Add(this.CavityVoltageChart);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(562, 158);
@@ -198,7 +133,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.MasterLaserIntensityScatterGraph);
+            this.groupBox2.Controls.Add(this.MasterLaserIntensityChart);
             this.groupBox2.Location = new System.Drawing.Point(12, 176);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(562, 156);
@@ -328,6 +263,38 @@
             this.label7.TabIndex = 53;
             this.label7.Text = "Summed Voltage";
             // 
+            // CavityVoltageChart
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.CavityVoltageChart.ChartAreas.Add(chartArea1);
+            this.CavityVoltageChart.Location = new System.Drawing.Point(6, 19);
+            this.CavityVoltageChart.Name = "CavityVoltageChart";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series1.Name = "cavityVoltagePlot";
+            this.CavityVoltageChart.Series.Add(series1);
+            this.CavityVoltageChart.Size = new System.Drawing.Size(550, 133);
+            this.CavityVoltageChart.TabIndex = 55;
+            this.CavityVoltageChart.Text = "chart1";
+            // 
+            // MasterLaserIntensityChart
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.MasterLaserIntensityChart.ChartAreas.Add(chartArea2);
+            this.MasterLaserIntensityChart.Location = new System.Drawing.Point(6, 17);
+            this.MasterLaserIntensityChart.Name = "MasterLaserIntensityChart";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series2.Name = "masterDataPlot";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Name = "masterFitPlot";
+            this.MasterLaserIntensityChart.Series.Add(series2);
+            this.MasterLaserIntensityChart.Series.Add(series3);
+            this.MasterLaserIntensityChart.Size = new System.Drawing.Size(550, 133);
+            this.MasterLaserIntensityChart.TabIndex = 56;
+            this.MasterLaserIntensityChart.Text = "chart1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -356,12 +323,11 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.voltageRampControl.ResumeLayout(false);
             this.voltageRampControl.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.rampLED)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MasterLaserIntensityScatterGraph)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.CavityVoltageReadScatterGraph)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CavLockVoltageTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CavityVoltageChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MasterLaserIntensityChart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -372,18 +338,8 @@
         private System.Windows.Forms.GroupBox voltageRampControl;
         private System.Windows.Forms.Button rampStartButton;
         private System.Windows.Forms.Button rampStopButton;
-        private NationalInstruments.UI.WindowsForms.Led rampLED;
-        public NationalInstruments.UI.WindowsForms.ScatterGraph MasterLaserIntensityScatterGraph;
-        public NationalInstruments.UI.ScatterPlot MasterDataPlot;
-        private NationalInstruments.UI.XAxis xAxis2;
-        private NationalInstruments.UI.YAxis yAxis2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox NumberOfScanpointsTextBox;
-        public NationalInstruments.UI.ScatterPlot MasterFitPlot;
-        public NationalInstruments.UI.WindowsForms.ScatterGraph CavityVoltageReadScatterGraph;
-        public NationalInstruments.UI.ScatterPlot cavityDataPlot;
-        private NationalInstruments.UI.XAxis xAxis3;
-        private NationalInstruments.UI.YAxis yAxis3;
         private System.Windows.Forms.TabControl slaveLasersTab;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -400,6 +356,8 @@
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TrackBar CavLockVoltageTrackBar;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataVisualization.Charting.Chart CavityVoltageChart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart MasterLaserIntensityChart;
     }
 }
 

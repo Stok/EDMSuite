@@ -205,6 +205,12 @@ namespace DAQ.Environment
                     Debug = false;
                     break;
 
+                case "D006-MMTF-Z400":
+                    Hardware = new D006MMTFZ400Hardware();
+                    FileSystem = new D006MMTFZ400FileSystem();
+                    Debug = false;
+                    break;
+
 				default:
 					Hardware = new EDMHardware();
 					FileSystem = new FileSystem();
