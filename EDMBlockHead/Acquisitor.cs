@@ -189,6 +189,8 @@ namespace EDMBlockHead.Acquire
                     p.SinglePointData.Add("MiniFlux1", hardwareController.miniFlux1Voltage);
                     p.SinglePointData.Add("MiniFlux2", hardwareController.miniFlux2Voltage);
                     p.SinglePointData.Add("MiniFlux3", hardwareController.miniFlux3Voltage);
+                    hardwareController.UpdatePiMonitor();
+                    p.SinglePointData.Add("piMonitor", hardwareController.piFlipMonVoltage);
                     hardwareController.ReadIMonitor();
                     p.SinglePointData.Add("NorthCurrent", hardwareController.NorthCurrent);
                     p.SinglePointData.Add("SouthCurrent", hardwareController.SouthCurrent);
@@ -330,7 +332,7 @@ namespace EDMBlockHead.Acquire
             //switchedChannels.Add(lf1Channel);
 
             HardwareControllerSwitchChannel lf1Channel = new HardwareControllerSwitchChannel();
-            lf1Channel.Channel = "flPZT";
+            lf1Channel.Channel = "probeAOM";
             lf1Channel.Modulation = config.GetModulationByName("LF1");
             switchedChannels.Add(lf1Channel);
 

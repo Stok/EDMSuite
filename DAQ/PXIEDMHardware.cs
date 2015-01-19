@@ -13,7 +13,6 @@ namespace DAQ.HAL
     /// </summary>
     public class PXIEDMHardware : DAQ.HAL.Hardware
     {
-
         public PXIEDMHardware()
         {
 
@@ -41,12 +40,16 @@ namespace DAQ.HAL
             string tclBoard = (string)Boards["tclBoard"];
 
             // add things to the info
-            // the analog triggers
+            // the analog triggersf
             Info.Add("analogTrigger0", (string)Boards["analogIn"] + "/PFI0");
             Info.Add("analogTrigger1", (string)Boards["analogIn"] + "/PFI1");
 
             Info.Add("sourceToDetect", 1.3);
             Info.Add("moleculeMass", 193.0);
+            Info.Add("machineLengthRatio", 3.842);
+            Info.Add("defaultGate",new double[] {2190, 80});
+
+
             Info.Add("phaseLockControlMethod", "synth");
             Info.Add("PGClockLine", pgBoard + "/PFI4"); //Mapped to PFI2 on 6533 connector
             Info.Add("PatternGeneratorBoard", pgBoard);
@@ -157,8 +160,9 @@ namespace DAQ.HAL
             // Don't use ai10, cross talk with other channels on this line
 
             // high quality analog inputs (will be) on the S-series analog in board
-            AddAnalogInputChannel("top", analogIn + "/ai0", AITerminalConfiguration.Differential);
-            AddAnalogInputChannel("norm", analogIn + "/ai1", AITerminalConfiguration.Differential);
+            // The last number in AddAnalogInputChannel is an optional calibration which turns VuS 
+            AddAnalogInputChannel("top", analogIn + "/ai0", AITerminalConfiguration.Differential, 0.1);
+            AddAnalogInputChannel("norm", analogIn + "/ai1", AITerminalConfiguration.Differential, 0.02);
             AddAnalogInputChannel("magnetometer", analogIn + "/ai2", AITerminalConfiguration.Differential);
             AddAnalogInputChannel("gnd", analogIn + "/ai3", AITerminalConfiguration.Differential);
             AddAnalogInputChannel("battery", analogIn + "/ai4", AITerminalConfiguration.Differential);
@@ -184,8 +188,8 @@ namespace DAQ.HAL
             AddAnalogInputChannel("cPlusMonitor", usbDAQ3 + "/ai1", AITerminalConfiguration.Differential);
             AddAnalogInputChannel("cMinusMonitor", usbDAQ3 + "/ai2", AITerminalConfiguration.Differential);
 
-            AddAnalogOutputChannel("cPlus", usbDAQ3 + "/ao0", -5, 0);
-            AddAnalogOutputChannel("cMinus", usbDAQ3 + "/ao1", 0, 5);
+            AddAnalogOutputChannel("cPlus", usbDAQ3 + "/ao0", 0, 10);
+            AddAnalogOutputChannel("cMinus", usbDAQ3 + "/ao1", 0, 10);
 
             // B field control
             //AddAnalogOutputChannel("steppingBBias", usbDAQ4 + "/ao0", 0, 5);
@@ -199,17 +203,18 @@ namespace DAQ.HAL
 
             //TCL Lockable lasers
             //Info.Add("TCLLockableLasers", new string[][] { new string[] { "flPZT2" }, /*new string[] { "flPZT2Temp" },*/ new string[] { "fibreAOM", "flPZT2Temp" } });
-            Info.Add("TCLLockableLasers", new string[] { "flPZT2" }); //, new string[] { "flPZT2Temp" }, new string[] { "fibreAOM"} });
-            Info.Add("TCLPhotodiodes", new string[] {"transCavV", "master", "p1" });// THE FIRST TWO MUST BE CAVITY AND MASTER PHOTODIODE!!!!
-            Info.Add("TCL_Slave_Voltage_Limit_Upper", 10.0); //volts: Laser control
-            Info.Add("TCL_Slave_Voltage_Limit_Lower", 0.0); //volts: Laser control
+            Info.Add("TCLLockableLasers", new string[] { "MenloPZT", "899ExternalScan" }); //, new string[] { "flPZT2Temp" }, new string[] { "fibreAOM"} });
+            Info.Add("TCLPhotodiodes", new string[] {"transCavV", "master", "p1", "p2" });// THE FIRST TWO MUST BE CAVITY AND MASTER PHOTODIODE!!!!
+            //Info.Add("TCL_Slave_Voltage_Limit_Upper", 10.0); //This now comes from the limits set when the AnalogOutputChannels are added
+            //Info.Add("TCL_Slave_Voltage_Limit_Lower", 0.0); //This now comes from the limits set when the AnalogOutputChannels are added
             Info.Add("TCL_Default_Gain", -1.1);
-            //Info.Add("TCL_Default_ScanPoints", 250);
             Info.Add("TCL_Default_VoltageToLaser", 2.5);
             Info.Add("TCL_Default_VoltageToDependent", 1.0);
+            Info.Add("TCL_Default_ScanPoints",300);
             // Some matching up for TCL
-            Info.Add("flPZT2", "p1");
-            Info.Add("flPZT2Temp", "p1");
+            Info.Add("MenloPZT", "p1");
+            //Info.Add("flPZT2Temp", "p1");
+            Info.Add("899ExternalScan", "p2");
             //Info.Add("fibreAOM", "p1");
             Info.Add("TCLTrigger", tclBoard + "/PFI0");
             Info.Add("TCL_MAX_INPUT_VOLTAGE", 10.0);
@@ -217,18 +222,21 @@ namespace DAQ.HAL
             AddAnalogInputChannel("transCavV", tclBoard + "/ai0", AITerminalConfiguration.Rse);
             AddAnalogInputChannel("master", tclBoard + "/ai1", AITerminalConfiguration.Rse);
             AddAnalogInputChannel("p1", tclBoard + "/ai2", AITerminalConfiguration.Rse);
+            AddAnalogInputChannel("p2", tclBoard + "/ai3", AITerminalConfiguration.Rse);
 
             // Laser control
             //AddAnalogOutputChannel("flPZT", usbDAQ4 + "/ao1", 0, 5);
-            AddAnalogOutputChannel("flPZT", aoBoard + "/ao7", 0, 10);
-            AddAnalogOutputChannel("flPZT2", aoBoard + "/ao2", 0, 10);
+            AddAnalogOutputChannel("899ExternalScan", aoBoard + "/ao7", -5, 5);
+            AddAnalogOutputChannel("MenloPZT", tclBoard + "/ao0", 0, 5);
+            AddAnalogOutputChannel("probeAOM", aoBoard + "/ao4", 0, 10);
+            AddAnalogOutputChannel("pumpAOM", aoBoard + "/ao2", 0, 10);
+
             AddAnalogOutputChannel("fibreAmpPwr", aoBoard + "/ao3");
             //AddAnalogOutputChannel("pumpAOM", aoBoard + "/ao4", 0, 10);
-            AddAnalogOutputChannel("pumpAOM", usbDAQ4 + "/ao0", 0, 5);
             //AddAnalogOutputChannel("flPZT2Temp", aoBoard + "/ao5", 0, 4); //voltage must not exceed 4V for Koheras laser
             //AddAnalogOutputChannel("flPZT2Cur", aoBoard + "/ao6", 0, 5); //voltage must not exceed 5V for Koheras laser
             //AddAnalogOutputChannel("fibreAOM", usbDAQ4 + "/ao1", 0, 5);
-            AddAnalogOutputChannel("rampfb", aoBoard + "/ao4", -10, 10);
+            AddAnalogOutputChannel("rampfb", tclBoard + "/ao1", -10, 10);
             AddAnalogOutputChannel("I2LockBias", aoBoard + "/ao5", 0, 5);
         }
 

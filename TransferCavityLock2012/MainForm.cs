@@ -35,16 +35,16 @@ namespace TransferCavityLock2012
             controller.InitializeUI();
         }
         
-        public void AddSlaveLaser(string name)
+        public void AddSlaveLaser(SlaveLaser sl)
         {
-            string title = name;
+            string title = sl.Name;
             TabPage newTab = new TabPage(title);
-            LockControlPanel panel = new LockControlPanel(name);
+            LockControlPanel panel = new LockControlPanel(title,sl.LowerVoltageLimit,sl.UpperVoltageLimit);
             panel.controller = this.controller;
             slaveLasersTab.TabPages.Add(newTab);
             newTab.Controls.Add(panel);
             slaveLasersTab.Enabled = true;
-            slaveLasers.Add(name, panel);
+            slaveLasers.Add(title, panel);
         }
 
         public void ShowAllTabPanels()
@@ -193,6 +193,11 @@ namespace TransferCavityLock2012
             scatterGraphPlot(MasterLaserIntensityScatterGraph, MasterDataPlot, cavityData, masterData);
             scatterGraphPlot(MasterLaserIntensityScatterGraph, MasterFitPlot, cavityData, masterFitData);
         }
+        public void DisplayMasterData(double[] cavityData, double[] masterData)
+        {
+            scatterGraphPlot(MasterLaserIntensityScatterGraph, MasterDataPlot, cavityData, masterData);
+        }
+
         public void DisplaySlaveData(string name, double[] cavityData, double[] slaveData, double[] slaveFitData)
         {
             slaveLasers[name].DisplayData(cavityData, slaveData);
@@ -227,6 +232,11 @@ namespace TransferCavityLock2012
         public void SetVtoOffsetVoltage(double value)
         {
             SetTextBox(VToOffsetTextBox, Convert.ToString(value));
+        }
+
+        public double GetVtoOffsetVoltage()
+        {
+            return Double.Parse(VToOffsetTextBox.Text);
         }
 
         public void SetMasterFitTextBox(double value)
@@ -278,66 +288,38 @@ namespace TransferCavityLock2012
 
         #endregion
 
-        private void MasterLaserIntensityScatterGraph_PlotDataChanged(object sender, XYPlotDataChangedEventArgs e)
-        {
-
-        }
-
-        private void masterLockEnableCheck_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        public void MasterSetPointTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MasterGainTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void logCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (logCheckBox.Checked)
+            {
+                controller.StartLogger();
+            }
+            else
+            {
+                controller.StopLogger();
+            }
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void CavLockVoltageTrackBar_Scroll(object sender, EventArgs e)
+        {
+            SetVtoOffsetVoltage(((double)CavLockVoltageTrackBar.Value)/100);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 
+            lock (controller.rampStopLock)
+            {
+                controller.StopTCL();
+            }
         }
 
-        public void VToOffsetTextBox_TextChanged(object sender, EventArgs e)
-        {
+        //private void VToOffsetTextBox_TextChanged(object sender, EventArgs e)
+        //{
+          //CavLockVoltageTrackBar.Value = (int)(100 * GetVtoOffsetVoltage());
+        //}
 
-        }
-
-        private void label2_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MasterFitTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void slaveLasersTab_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
- 
-
-
-
-        
+       
     }
 }
 

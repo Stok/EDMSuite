@@ -53,9 +53,9 @@ def measureParametersAndMakeBC(cluster, eState, bState, rfState, scramblerV, mea
 	bh.StartPattern()
 	hc.UpdateBCurrentMonitor()
 	hc.UpdateVMonitor()
-	hc.UpdateI2AOMFreqMonitor()
-	hc.UpdatePumpAOMFreqMonitor()
-	hc.UpdateVCOFraction()
+	hc.UpdateProbeAOMFreqMonitor()
+	#hc.UpdatePumpAOMFreqMonitor()
+	#hc.CheckPiMonitor()
 	print("Measuring polarizer angle")
 	hc.UpdateProbePolAngleMonitor()
 	hc.UpdatePumpPolAngleMonitor()
@@ -108,10 +108,10 @@ def measureParametersAndMakeBC(cluster, eState, bState, rfState, scramblerV, mea
 	bc.GetModulationByName("RF2F").Step = hc.RF2FMStep
 	bc.GetModulationByName("RF2F").PhysicalCentre = hc.RF2FrequencyCentre
 	bc.GetModulationByName("RF2F").PhysicalStep = hc.RF2FrequencyStep
-	bc.GetModulationByName("LF1").Centre = hc.FLPZTVoltage
-	bc.GetModulationByName("LF1").Step = hc.FLPZTStep
-	bc.GetModulationByName("LF1").PhysicalCentre = hc.I2LockAOMFrequencyCentre
-	bc.GetModulationByName("LF1").PhysicalStep = hc.I2LockAOMFrequencyStep
+	bc.GetModulationByName("LF1").Centre = hc.probeAOMVoltage
+	bc.GetModulationByName("LF1").Step = hc.probeAOMStep
+	bc.GetModulationByName("LF1").PhysicalCentre = hc.ProbeAOMFrequencyCentre
+	bc.GetModulationByName("LF1").PhysicalStep = hc.ProbeAOMFrequencyStep
 	bc.GetModulationByName("LF2").Centre = hc.PumpAOMVoltage
 	bc.GetModulationByName("LF2").Centre = hc.PumpAOMStep
 	bc.GetModulationByName("LF2").PhysicalCentre = hc.PumpAOMFrequencyCentre
@@ -333,19 +333,16 @@ def updateLocksNL(bState):
 
 	# Laser frequency lock (-ve multiplier in f0 mode and +ve in f1)
 	deltaLF1 = -2.5* ( lf1dbdbValue)
-	#deltaLF1 = 2.5 * ( lf1dbValue) (for Diode laser)
 	deltaLF1 = windowValue(deltaLF1, -0.1, 0.1)
 	#deltaLF1 = 0
 	print "Attempting to change LF1 by " + str(deltaLF1) + " V."
-	newLF1 = windowValue( hc.FLPZTVoltage - deltaLF1, hc.FLPZTStep, 10 - hc.FLPZTStep )
+	newLF1 = windowValue( hc.probeAOMVoltage - deltaLF1, hc.probeAOMVoltage, 10 - hc.FLPZTStep )
 	hc.SetFLPZTVoltage( newLF1 )
 	
 	# Laser frequency lock (-ve multiplier in f0 mode and +ve in f1)
-	# first cancel the overal movement of the laser
-	deltaLF2 = hc.VCOConvFrac * deltaLF1 - 2.5 * lf2dbdbValue
-	#deltaLF2 = hc.VCOConvFrac * deltaLF1
-	#deltaLF2 = windowValue(deltaLF2, -0.1, 0.1)
-	deltaLF2 = 0
+	deltaLF2 =  - 2.5 * lf2dbdbValue
+	deltaLF2 = windowValue(deltaLF2, -0.1, 0.1)
+	#deltaLF2 = 0
 	print "Attempting to change LF2 by " + str(deltaLF2) + " V."
 	newLF2 = windowValue( hc.PumpAOMVoltage - deltaLF2, hc.PumpAOMStep, 10 - hc.PumpAOMStep )
 	hc.SetPumpAOMVoltage( newLF2 )
@@ -493,10 +490,10 @@ def EDMGo():
 		print "Average E_{Mag} for the last 10 blocks " + str(runningEmag1Mean)
 
 
-		if (dbValue < 12):
+		if (dbValue < 8):
 			print("Dodgy spot target rotation.")
 			for i in range(3):
-				hc.StepTarget(10)
+				hc.StepTarget(2)
 				System.Threading.Thread.Sleep(500)
 		if ((blockIndex % kReZeroLeakageMonitorsPeriod) == 0):
 			print("Recalibrating leakage monitors.")

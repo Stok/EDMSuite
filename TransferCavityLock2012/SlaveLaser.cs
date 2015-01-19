@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using DAQ.Environment;
 using DAQ.TransferCavityLock2012;
+using NationalInstruments.DAQmx;
+using DAQ.Environment;
+using DAQ.HAL;
 
 namespace TransferCavityLock2012
 {
@@ -63,6 +66,23 @@ namespace TransferCavityLock2012
         public void SetLaserVoltage()
         {
             laser.SetLaserVoltage(VoltageToLaser);
+        }
+
+
+        public double UpperVoltageLimit
+        {
+            get
+            {
+                return ((AnalogOutputChannel)Environs.Hardware.AnalogOutputChannels[Name]).RangeHigh;
+            }
+        }
+
+        public double LowerVoltageLimit
+        {
+            get
+            {
+                return ((AnalogOutputChannel)Environs.Hardware.AnalogOutputChannels[Name]).RangeLow;
+            }
         }
 
         private double voltageToLaser = (double)Environs.Hardware.GetInfo("TCL_Default_VoltageToLaser");
@@ -131,7 +151,7 @@ namespace TransferCavityLock2012
 
         private double calculateLaserSetPoint(double[] masterFitCoefficients, double[] slaveFitCoefficients)
         {
-            return Math.Round(slaveFitCoefficients[1] - masterFitCoefficients[1], 4);
+            return slaveFitCoefficients[1] - masterFitCoefficients[1];
         }
 
 
@@ -150,15 +170,16 @@ namespace TransferCavityLock2012
             double currentPeakSeparation = new double();
             currentPeakSeparation = slaveFitCoefficients[1] - masterFitCoefficients[1];
             return currentPeakSeparation - LaserSetPoint;
+            
         }
 
         private double calculateNewVoltageToLaser(double vtolaser, double measuredVoltageChange)
         {
             double newVoltage;
             if (vtolaser
-                + Gain * measuredVoltageChange > (double)Environs.Hardware.GetInfo("TCL_Slave_Voltage_Limit_Upper")
+                + Gain * measuredVoltageChange > UpperVoltageLimit
                 || vtolaser
-                + Gain * measuredVoltageChange < (double)Environs.Hardware.GetInfo("TCL_Slave_Voltage_Limit_Lower"))
+                + Gain * measuredVoltageChange < LowerVoltageLimit)
             {
                 newVoltage = vtolaser;
             }
@@ -166,8 +187,7 @@ namespace TransferCavityLock2012
             {
                 newVoltage = vtolaser + Gain * measuredVoltageChange; //Feedback 
             }
-            double r = Math.Round(newVoltage, 4);
-            return r;
+            return newVoltage;
         }
 
         #endregion
