@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 
-using NationalInstruments.UI;
-using NationalInstruments.UI.WindowsForms;
+
+using System.Windows.Forms.DataVisualization.Charting;
 
 using Data;
 
@@ -17,40 +17,7 @@ namespace ScanMaster.GUI
 
 		// this windows associated Viewer
 		private StandardViewer viewer;
-		private System.ComponentModel.Container components = null;
-		private NationalInstruments.UI.WindowsForms.ScatterGraph analog1Graph;
-		private NationalInstruments.UI.XAxis xAxis1;
-		private NationalInstruments.UI.YAxis yAxis1;
-		private NationalInstruments.UI.WindowsForms.ScatterGraph analog2Graph;
-		private NationalInstruments.UI.XAxis xAxis2;
-        private NationalInstruments.UI.YAxis yAxis2;
-		private NationalInstruments.UI.ScatterPlot analog1Plot;
-		private NationalInstruments.UI.ScatterPlot analog2Plot;
-		private NationalInstruments.UI.WindowsForms.ScatterGraph pmtGraph;
-		private NationalInstruments.UI.ScatterPlot pmtOnPlot;
-		private NationalInstruments.UI.XAxis pmtXAxis;
-		private NationalInstruments.UI.YAxis pmtYAxis;
-		private NationalInstruments.UI.XAxis xAxis3;
-		private NationalInstruments.UI.ScatterPlot pmtOffPlot;
-		private NationalInstruments.UI.XYCursor pmtLowCursor;
-		private NationalInstruments.UI.XAxis xAxis5;
-		private NationalInstruments.UI.WindowsForms.ScatterGraph differenceGraph;
-		private NationalInstruments.UI.WindowsForms.WaveformGraph tofGraph;
-		private NationalInstruments.UI.XAxis xAxis4;
-		private NationalInstruments.UI.WaveformPlot tofOnPlot;
-		private NationalInstruments.UI.WaveformPlot tofOffPlot;
-		private NationalInstruments.UI.ScatterPlot differencePlot;
-		private NationalInstruments.UI.ScatterPlot differenceAvgPlot;
-		private NationalInstruments.UI.XYCursor tofLowCursor;
-		private NationalInstruments.UI.XYCursor tofHighCursor;
-		private NationalInstruments.UI.WaveformPlot tofOnAveragePlot;
-		private NationalInstruments.UI.WaveformPlot tofOffAveragePlot;
-		private NationalInstruments.UI.ScatterPlot pmtOnAvgPlot;
-		private NationalInstruments.UI.ScatterPlot pmtOffAvgPlot;
-		private NationalInstruments.UI.YAxis differenceYAxis;
-		private NationalInstruments.UI.YAxis tofYAxis;
-		private NationalInstruments.UI.YAxis tofAvgYAxis;
-		private NationalInstruments.UI.ScatterPlot pmtFitPlot;
+        private System.ComponentModel.Container components = null;
 		private System.Windows.Forms.Label label1;
 		public System.Windows.Forms.ComboBox tofFitFunctionCombo;
 		private System.Windows.Forms.Label label2;
@@ -58,8 +25,7 @@ namespace ScanMaster.GUI
 		public System.Windows.Forms.ComboBox spectrumFitFunctionCombo;
 		public ComboBox spectrumFitModeCombo;
 		public System.Windows.Forms.Label tofFitResultsLabel;
-		public System.Windows.Forms.Label spectrumFitResultsLabel;
-		private WaveformPlot tofFitPlot;
+        public System.Windows.Forms.Label spectrumFitResultsLabel;
 		private Button updateTOFFitButton;
         private Button updateSpectrumFitButton;
         public ComboBox tofFitDataSelectCombo;
@@ -71,7 +37,28 @@ namespace ScanMaster.GUI
         private SplitContainer splitContainer2;
         private StatusBar statusBar2;
         private Button defaultGateButton;
-		private NationalInstruments.UI.XYCursor pmtHighCursor;
+
+        private Chart analog2Graph;
+        private Chart differenceGraph;
+
+        private Chart tofGraph;
+        private Chart pmtGraph;
+        private GroupBox groupBox1;
+        private GroupBox groupBox2;
+        private GroupBox groupBox3;
+        private GroupBox groupBox4;
+        private Label label7;
+        private Label label6;
+        private GroupBox groupBox5;
+        private TextBox endTOFCursorPositionTextBox;
+        private TextBox startTOFCursorPositionTextBox;
+        private Button updateTOFCursorsButton;
+        private Label label5;
+        private Label label4;
+        private TextBox endPMTCursorPositionTextBox;
+        private TextBox startPMTCursorPositionTextBox;
+        private Button updatePMTCursorsButton;
+        private Chart analog1Graph;
 
 		public StandardViewerWindow(StandardViewer viewer)
 		{
@@ -99,42 +86,30 @@ namespace ScanMaster.GUI
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series13 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series15 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StandardViewerWindow));
-            this.analog1Graph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.analog1Plot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis1 = new NationalInstruments.UI.XAxis();
-            this.yAxis1 = new NationalInstruments.UI.YAxis();
-            this.analog2Graph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.analog2Plot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis2 = new NationalInstruments.UI.XAxis();
-            this.yAxis2 = new NationalInstruments.UI.YAxis();
-            this.pmtGraph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.pmtLowCursor = new NationalInstruments.UI.XYCursor();
-            this.pmtOnAvgPlot = new NationalInstruments.UI.ScatterPlot();
-            this.xAxis3 = new NationalInstruments.UI.XAxis();
-            this.pmtYAxis = new NationalInstruments.UI.YAxis();
-            this.pmtHighCursor = new NationalInstruments.UI.XYCursor();
-            this.pmtOnPlot = new NationalInstruments.UI.ScatterPlot();
-            this.pmtOffPlot = new NationalInstruments.UI.ScatterPlot();
-            this.pmtOffAvgPlot = new NationalInstruments.UI.ScatterPlot();
-            this.pmtFitPlot = new NationalInstruments.UI.ScatterPlot();
-            this.pmtXAxis = new NationalInstruments.UI.XAxis();
-            this.xAxis5 = new NationalInstruments.UI.XAxis();
-            this.differenceYAxis = new NationalInstruments.UI.YAxis();
-            this.differenceGraph = new NationalInstruments.UI.WindowsForms.ScatterGraph();
-            this.differencePlot = new NationalInstruments.UI.ScatterPlot();
-            this.differenceAvgPlot = new NationalInstruments.UI.ScatterPlot();
-            this.tofGraph = new NationalInstruments.UI.WindowsForms.WaveformGraph();
-            this.tofLowCursor = new NationalInstruments.UI.XYCursor();
-            this.tofOnAveragePlot = new NationalInstruments.UI.WaveformPlot();
-            this.xAxis4 = new NationalInstruments.UI.XAxis();
-            this.tofAvgYAxis = new NationalInstruments.UI.YAxis();
-            this.tofHighCursor = new NationalInstruments.UI.XYCursor();
-            this.tofOnPlot = new NationalInstruments.UI.WaveformPlot();
-            this.tofYAxis = new NationalInstruments.UI.YAxis();
-            this.tofOffPlot = new NationalInstruments.UI.WaveformPlot();
-            this.tofOffAveragePlot = new NationalInstruments.UI.WaveformPlot();
-            this.tofFitPlot = new NationalInstruments.UI.WaveformPlot();
             this.tofFitModeCombo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tofFitFunctionCombo = new System.Windows.Forms.ComboBox();
@@ -154,15 +129,26 @@ namespace ScanMaster.GUI
             this.label3 = new System.Windows.Forms.Label();
             this.updateNoiseResultsbutton = new System.Windows.Forms.Button();
             this.noiseResultsLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.analog1Graph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.analog2Graph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pmtGraph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pmtLowCursor)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pmtHighCursor)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.differenceGraph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tofGraph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tofLowCursor)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tofHighCursor)).BeginInit();
+            this.analog1Graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.analog2Graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.differenceGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tofGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pmtGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.endTOFCursorPositionTextBox = new System.Windows.Forms.TextBox();
+            this.startTOFCursorPositionTextBox = new System.Windows.Forms.TextBox();
+            this.updateTOFCursorsButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.endPMTCursorPositionTextBox = new System.Windows.Forms.TextBox();
+            this.startPMTCursorPositionTextBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.updatePMTCursorsButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -171,277 +157,17 @@ namespace ScanMaster.GUI
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.analog1Graph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.analog2Graph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.differenceGraph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tofGraph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pmtGraph)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // analog1Graph
-            // 
-            this.analog1Graph.Location = new System.Drawing.Point(376, 8);
-            this.analog1Graph.Name = "analog1Graph";
-            this.analog1Graph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.analog1Plot});
-            this.analog1Graph.Size = new System.Drawing.Size(584, 136);
-            this.analog1Graph.TabIndex = 0;
-            this.analog1Graph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis1});
-            this.analog1Graph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.yAxis1});
-            // 
-            // analog1Plot
-            // 
-            this.analog1Plot.AntiAliased = true;
-            this.analog1Plot.LineColor = System.Drawing.Color.Red;
-            this.analog1Plot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.analog1Plot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.analog1Plot.PointColor = System.Drawing.Color.Red;
-            this.analog1Plot.PointStyle = NationalInstruments.UI.PointStyle.SolidDiamond;
-            this.analog1Plot.XAxis = this.xAxis1;
-            this.analog1Plot.YAxis = this.yAxis1;
-            // 
-            // xAxis1
-            // 
-            this.xAxis1.Mode = NationalInstruments.UI.AxisMode.Fixed;
-            // 
-            // analog2Graph
-            // 
-            this.analog2Graph.Location = new System.Drawing.Point(376, 152);
-            this.analog2Graph.Name = "analog2Graph";
-            this.analog2Graph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.analog2Plot});
-            this.analog2Graph.Size = new System.Drawing.Size(584, 136);
-            this.analog2Graph.TabIndex = 1;
-            this.analog2Graph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis2});
-            this.analog2Graph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.yAxis2});
-            // 
-            // analog2Plot
-            // 
-            this.analog2Plot.AntiAliased = true;
-            this.analog2Plot.LineColor = System.Drawing.Color.Blue;
-            this.analog2Plot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.analog2Plot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.analog2Plot.PointColor = System.Drawing.Color.Blue;
-            this.analog2Plot.PointStyle = NationalInstruments.UI.PointStyle.SolidDiamond;
-            this.analog2Plot.XAxis = this.xAxis2;
-            this.analog2Plot.YAxis = this.yAxis2;
-            // 
-            // xAxis2
-            // 
-            this.xAxis2.Mode = NationalInstruments.UI.AxisMode.Fixed;
-            // 
-            // pmtGraph
-            // 
-            this.pmtGraph.Cursors.AddRange(new NationalInstruments.UI.XYCursor[] {
-            this.pmtLowCursor,
-            this.pmtHighCursor});
-            this.pmtGraph.InteractionMode = ((NationalInstruments.UI.GraphInteractionModes)((((((((NationalInstruments.UI.GraphInteractionModes.ZoomX | NationalInstruments.UI.GraphInteractionModes.ZoomY) 
-            | NationalInstruments.UI.GraphInteractionModes.ZoomAroundPoint) 
-            | NationalInstruments.UI.GraphInteractionModes.PanX) 
-            | NationalInstruments.UI.GraphInteractionModes.PanY) 
-            | NationalInstruments.UI.GraphInteractionModes.DragCursor) 
-            | NationalInstruments.UI.GraphInteractionModes.DragAnnotationCaption) 
-            | NationalInstruments.UI.GraphInteractionModes.EditRange)));
-            this.pmtGraph.Location = new System.Drawing.Point(376, 304);
-            this.pmtGraph.Name = "pmtGraph";
-            this.pmtGraph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.pmtOnPlot,
-            this.pmtOffPlot,
-            this.pmtOnAvgPlot,
-            this.pmtOffAvgPlot,
-            this.pmtFitPlot});
-            this.pmtGraph.Size = new System.Drawing.Size(584, 280);
-            this.pmtGraph.TabIndex = 9;
-            this.pmtGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis3});
-            this.pmtGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.pmtYAxis});
-            // 
-            // pmtLowCursor
-            // 
-            this.pmtLowCursor.HorizontalCrosshairMode = NationalInstruments.UI.CursorCrosshairMode.None;
-            this.pmtLowCursor.LabelVisible = true;
-            this.pmtLowCursor.Plot = this.pmtOnAvgPlot;
-            this.pmtLowCursor.SnapMode = NationalInstruments.UI.CursorSnapMode.Floating;
-            this.pmtLowCursor.AfterMove += new NationalInstruments.UI.AfterMoveXYCursorEventHandler(this.PMTCursorMoved);
-            // 
-            // pmtOnAvgPlot
-            // 
-            this.pmtOnAvgPlot.LineColor = System.Drawing.Color.Red;
-            this.pmtOnAvgPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.pmtOnAvgPlot.XAxis = this.xAxis3;
-            this.pmtOnAvgPlot.YAxis = this.pmtYAxis;
-            // 
-            // xAxis3
-            // 
-            this.xAxis3.Mode = NationalInstruments.UI.AxisMode.Fixed;
-            // 
-            // pmtHighCursor
-            // 
-            this.pmtHighCursor.Color = System.Drawing.Color.Lime;
-            this.pmtHighCursor.HorizontalCrosshairMode = NationalInstruments.UI.CursorCrosshairMode.None;
-            this.pmtHighCursor.LabelVisible = true;
-            this.pmtHighCursor.Plot = this.pmtOnAvgPlot;
-            this.pmtHighCursor.SnapMode = NationalInstruments.UI.CursorSnapMode.Floating;
-            this.pmtHighCursor.AfterMove += new NationalInstruments.UI.AfterMoveXYCursorEventHandler(this.PMTCursorMoved);
-            // 
-            // pmtOnPlot
-            // 
-            this.pmtOnPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.pmtOnPlot.PointStyle = NationalInstruments.UI.PointStyle.Cross;
-            this.pmtOnPlot.XAxis = this.xAxis3;
-            this.pmtOnPlot.YAxis = this.pmtYAxis;
-            // 
-            // pmtOffPlot
-            // 
-            this.pmtOffPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.pmtOffPlot.PointColor = System.Drawing.Color.Magenta;
-            this.pmtOffPlot.PointStyle = NationalInstruments.UI.PointStyle.Cross;
-            this.pmtOffPlot.XAxis = this.xAxis3;
-            this.pmtOffPlot.YAxis = this.pmtYAxis;
-            // 
-            // pmtOffAvgPlot
-            // 
-            this.pmtOffAvgPlot.LineColor = System.Drawing.Color.PowderBlue;
-            this.pmtOffAvgPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.pmtOffAvgPlot.XAxis = this.xAxis3;
-            this.pmtOffAvgPlot.YAxis = this.pmtYAxis;
-            // 
-            // pmtFitPlot
-            // 
-            this.pmtFitPlot.LineColor = System.Drawing.Color.Silver;
-            this.pmtFitPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.pmtFitPlot.LineStyle = NationalInstruments.UI.LineStyle.DashDot;
-            this.pmtFitPlot.LineWidth = 2F;
-            this.pmtFitPlot.XAxis = this.xAxis3;
-            this.pmtFitPlot.YAxis = this.pmtYAxis;
-            // 
-            // pmtXAxis
-            // 
-            this.pmtXAxis.Mode = NationalInstruments.UI.AxisMode.Fixed;
-            // 
-            // xAxis5
-            // 
-            this.xAxis5.CaptionBackColor = System.Drawing.SystemColors.ControlLight;
-            this.xAxis5.Mode = NationalInstruments.UI.AxisMode.Fixed;
-            // 
-            // differenceYAxis
-            // 
-            this.differenceYAxis.CaptionBackColor = System.Drawing.SystemColors.ControlLight;
-            // 
-            // differenceGraph
-            // 
-            this.differenceGraph.Location = new System.Drawing.Point(8, 304);
-            this.differenceGraph.Name = "differenceGraph";
-            this.differenceGraph.Plots.AddRange(new NationalInstruments.UI.ScatterPlot[] {
-            this.differencePlot,
-            this.differenceAvgPlot});
-            this.differenceGraph.Size = new System.Drawing.Size(352, 280);
-            this.differenceGraph.TabIndex = 15;
-            this.differenceGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis5});
-            this.differenceGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.differenceYAxis});
-            // 
-            // differencePlot
-            // 
-            this.differencePlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.differencePlot.PointColor = System.Drawing.Color.Lime;
-            this.differencePlot.PointStyle = NationalInstruments.UI.PointStyle.Cross;
-            this.differencePlot.XAxis = this.xAxis5;
-            this.differencePlot.YAxis = this.differenceYAxis;
-            // 
-            // differenceAvgPlot
-            // 
-            this.differenceAvgPlot.LineColor = System.Drawing.Color.Red;
-            this.differenceAvgPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.differenceAvgPlot.XAxis = this.xAxis5;
-            this.differenceAvgPlot.YAxis = this.differenceYAxis;
-            // 
-            // tofGraph
-            // 
-            this.tofGraph.Cursors.AddRange(new NationalInstruments.UI.XYCursor[] {
-            this.tofLowCursor,
-            this.tofHighCursor});
-            this.tofGraph.Location = new System.Drawing.Point(8, 8);
-            this.tofGraph.Name = "tofGraph";
-            this.tofGraph.Plots.AddRange(new NationalInstruments.UI.WaveformPlot[] {
-            this.tofOnPlot,
-            this.tofOffPlot,
-            this.tofOnAveragePlot,
-            this.tofOffAveragePlot,
-            this.tofFitPlot});
-            this.tofGraph.Size = new System.Drawing.Size(352, 280);
-            this.tofGraph.TabIndex = 16;
-            this.tofGraph.XAxes.AddRange(new NationalInstruments.UI.XAxis[] {
-            this.xAxis4});
-            this.tofGraph.YAxes.AddRange(new NationalInstruments.UI.YAxis[] {
-            this.tofYAxis,
-            this.tofAvgYAxis});
-            // 
-            // tofLowCursor
-            // 
-            this.tofLowCursor.HorizontalCrosshairMode = NationalInstruments.UI.CursorCrosshairMode.None;
-            this.tofLowCursor.LabelVisible = true;
-            this.tofLowCursor.LabelXFormat = new NationalInstruments.UI.FormatString(NationalInstruments.UI.FormatStringMode.Numeric, "G3");
-            this.tofLowCursor.LabelYFormat = new NationalInstruments.UI.FormatString(NationalInstruments.UI.FormatStringMode.Numeric, "G3");
-            this.tofLowCursor.Plot = this.tofOnAveragePlot;
-            this.tofLowCursor.SnapMode = NationalInstruments.UI.CursorSnapMode.Floating;
-            this.tofLowCursor.AfterMove += new NationalInstruments.UI.AfterMoveXYCursorEventHandler(this.TOFCursorMoved);
-            // 
-            // tofOnAveragePlot
-            // 
-            this.tofOnAveragePlot.LineColor = System.Drawing.Color.Red;
-            this.tofOnAveragePlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.tofOnAveragePlot.XAxis = this.xAxis4;
-            this.tofOnAveragePlot.YAxis = this.tofAvgYAxis;
-            // 
-            // tofAvgYAxis
-            // 
-            this.tofAvgYAxis.Position = NationalInstruments.UI.YAxisPosition.Right;
-            // 
-            // tofHighCursor
-            // 
-            this.tofHighCursor.Color = System.Drawing.Color.Lime;
-            this.tofHighCursor.HorizontalCrosshairMode = NationalInstruments.UI.CursorCrosshairMode.None;
-            this.tofHighCursor.LabelVisible = true;
-            this.tofHighCursor.LabelXFormat = new NationalInstruments.UI.FormatString(NationalInstruments.UI.FormatStringMode.Numeric, "G3");
-            this.tofHighCursor.LabelYFormat = new NationalInstruments.UI.FormatString(NationalInstruments.UI.FormatStringMode.Numeric, "G3");
-            this.tofHighCursor.Plot = this.tofOnAveragePlot;
-            this.tofHighCursor.SnapMode = NationalInstruments.UI.CursorSnapMode.Floating;
-            this.tofHighCursor.AfterMove += new NationalInstruments.UI.AfterMoveXYCursorEventHandler(this.TOFCursorMoved);
-            // 
-            // tofOnPlot
-            // 
-            this.tofOnPlot.LineColor = System.Drawing.Color.Blue;
-            this.tofOnPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.tofOnPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.tofOnPlot.PointStyle = NationalInstruments.UI.PointStyle.Plus;
-            this.tofOnPlot.XAxis = this.xAxis4;
-            this.tofOnPlot.YAxis = this.tofYAxis;
-            // 
-            // tofOffPlot
-            // 
-            this.tofOffPlot.LineStyle = NationalInstruments.UI.LineStyle.None;
-            this.tofOffPlot.PointColor = System.Drawing.Color.LawnGreen;
-            this.tofOffPlot.PointStyle = NationalInstruments.UI.PointStyle.Plus;
-            this.tofOffPlot.XAxis = this.xAxis4;
-            this.tofOffPlot.YAxis = this.tofYAxis;
-            // 
-            // tofOffAveragePlot
-            // 
-            this.tofOffAveragePlot.LineColor = System.Drawing.Color.PowderBlue;
-            this.tofOffAveragePlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.tofOffAveragePlot.XAxis = this.xAxis4;
-            this.tofOffAveragePlot.YAxis = this.tofAvgYAxis;
-            // 
-            // tofFitPlot
-            // 
-            this.tofFitPlot.LineColor = System.Drawing.Color.Silver;
-            this.tofFitPlot.LineColorPrecedence = NationalInstruments.UI.ColorPrecedence.UserDefinedColor;
-            this.tofFitPlot.LineStyle = NationalInstruments.UI.LineStyle.DashDot;
-            this.tofFitPlot.LineWidth = 2F;
-            this.tofFitPlot.XAxis = this.xAxis4;
-            this.tofFitPlot.YAxis = this.tofAvgYAxis;
             // 
             // tofFitModeCombo
             // 
@@ -449,7 +175,7 @@ namespace ScanMaster.GUI
             this.tofFitModeCombo.Items.AddRange(new object[] {
             "off",
             "average"});
-            this.tofFitModeCombo.Location = new System.Drawing.Point(64, 605);
+            this.tofFitModeCombo.Location = new System.Drawing.Point(64, 37);
             this.tofFitModeCombo.Name = "tofFitModeCombo";
             this.tofFitModeCombo.Size = new System.Drawing.Size(72, 21);
             this.tofFitModeCombo.TabIndex = 17;
@@ -457,7 +183,7 @@ namespace ScanMaster.GUI
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(6, 584);
+            this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 23);
             this.label1.TabIndex = 18;
@@ -467,7 +193,7 @@ namespace ScanMaster.GUI
             // tofFitFunctionCombo
             // 
             this.tofFitFunctionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tofFitFunctionCombo.Location = new System.Drawing.Point(142, 605);
+            this.tofFitFunctionCombo.Location = new System.Drawing.Point(142, 37);
             this.tofFitFunctionCombo.Name = "tofFitFunctionCombo";
             this.tofFitFunctionCombo.Size = new System.Drawing.Size(88, 21);
             this.tofFitFunctionCombo.TabIndex = 19;
@@ -476,7 +202,7 @@ namespace ScanMaster.GUI
             // spectrumFitFunctionCombo
             // 
             this.spectrumFitFunctionCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.spectrumFitFunctionCombo.Location = new System.Drawing.Point(632, 605);
+            this.spectrumFitFunctionCombo.Location = new System.Drawing.Point(636, 34);
             this.spectrumFitFunctionCombo.Name = "spectrumFitFunctionCombo";
             this.spectrumFitFunctionCombo.Size = new System.Drawing.Size(88, 21);
             this.spectrumFitFunctionCombo.TabIndex = 22;
@@ -484,7 +210,7 @@ namespace ScanMaster.GUI
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(551, 587);
+            this.label2.Location = new System.Drawing.Point(555, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 15);
             this.label2.TabIndex = 21;
@@ -498,7 +224,7 @@ namespace ScanMaster.GUI
             "off",
             "average",
             "shot"});
-            this.spectrumFitModeCombo.Location = new System.Drawing.Point(554, 605);
+            this.spectrumFitModeCombo.Location = new System.Drawing.Point(558, 34);
             this.spectrumFitModeCombo.Name = "spectrumFitModeCombo";
             this.spectrumFitModeCombo.Size = new System.Drawing.Size(72, 21);
             this.spectrumFitModeCombo.TabIndex = 20;
@@ -507,7 +233,7 @@ namespace ScanMaster.GUI
             // tofFitResultsLabel
             // 
             this.tofFitResultsLabel.ForeColor = System.Drawing.Color.Blue;
-            this.tofFitResultsLabel.Location = new System.Drawing.Point(260, 602);
+            this.tofFitResultsLabel.Location = new System.Drawing.Point(260, 34);
             this.tofFitResultsLabel.Name = "tofFitResultsLabel";
             this.tofFitResultsLabel.Size = new System.Drawing.Size(100, 24);
             this.tofFitResultsLabel.TabIndex = 23;
@@ -517,7 +243,7 @@ namespace ScanMaster.GUI
             // spectrumFitResultsLabel
             // 
             this.spectrumFitResultsLabel.ForeColor = System.Drawing.Color.Blue;
-            this.spectrumFitResultsLabel.Location = new System.Drawing.Point(748, 602);
+            this.spectrumFitResultsLabel.Location = new System.Drawing.Point(752, 33);
             this.spectrumFitResultsLabel.Name = "spectrumFitResultsLabel";
             this.spectrumFitResultsLabel.Size = new System.Drawing.Size(210, 24);
             this.spectrumFitResultsLabel.TabIndex = 24;
@@ -526,7 +252,7 @@ namespace ScanMaster.GUI
             // 
             // updateTOFFitButton
             // 
-            this.updateTOFFitButton.Location = new System.Drawing.Point(236, 603);
+            this.updateTOFFitButton.Location = new System.Drawing.Point(236, 35);
             this.updateTOFFitButton.Name = "updateTOFFitButton";
             this.updateTOFFitButton.Size = new System.Drawing.Size(18, 23);
             this.updateTOFFitButton.TabIndex = 25;
@@ -536,7 +262,7 @@ namespace ScanMaster.GUI
             // 
             // updateSpectrumFitButton
             // 
-            this.updateSpectrumFitButton.Location = new System.Drawing.Point(724, 605);
+            this.updateSpectrumFitButton.Location = new System.Drawing.Point(728, 34);
             this.updateSpectrumFitButton.Name = "updateSpectrumFitButton";
             this.updateSpectrumFitButton.Size = new System.Drawing.Size(18, 23);
             this.updateSpectrumFitButton.TabIndex = 26;
@@ -550,7 +276,7 @@ namespace ScanMaster.GUI
             this.tofFitDataSelectCombo.Items.AddRange(new object[] {
             "On",
             "Off"});
-            this.tofFitDataSelectCombo.Location = new System.Drawing.Point(8, 605);
+            this.tofFitDataSelectCombo.Location = new System.Drawing.Point(8, 37);
             this.tofFitDataSelectCombo.Name = "tofFitDataSelectCombo";
             this.tofFitDataSelectCombo.Size = new System.Drawing.Size(50, 21);
             this.tofFitDataSelectCombo.TabIndex = 27;
@@ -558,7 +284,7 @@ namespace ScanMaster.GUI
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 636);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 726);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -568,8 +294,8 @@ namespace ScanMaster.GUI
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.statusBar1);
-            this.splitContainer1.Size = new System.Drawing.Size(970, 23);
-            this.splitContainer1.SplitterDistance = 371;
+            this.splitContainer1.Size = new System.Drawing.Size(1121, 23);
+            this.splitContainer1.SplitterDistance = 427;
             this.splitContainer1.TabIndex = 30;
             // 
             // splitContainer2
@@ -585,15 +311,15 @@ namespace ScanMaster.GUI
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.defaultGateButton);
-            this.splitContainer2.Size = new System.Drawing.Size(371, 23);
-            this.splitContainer2.SplitterDistance = 236;
+            this.splitContainer2.Size = new System.Drawing.Size(427, 23);
+            this.splitContainer2.SplitterDistance = 271;
             this.splitContainer2.TabIndex = 0;
             // 
             // statusBar2
             // 
             this.statusBar2.Location = new System.Drawing.Point(0, 0);
             this.statusBar2.Name = "statusBar2";
-            this.statusBar2.Size = new System.Drawing.Size(236, 23);
+            this.statusBar2.Size = new System.Drawing.Size(271, 23);
             this.statusBar2.SizingGrip = false;
             this.statusBar2.TabIndex = 32;
             this.statusBar2.Text = "Ready";
@@ -612,14 +338,14 @@ namespace ScanMaster.GUI
             // 
             this.statusBar1.Location = new System.Drawing.Point(0, 0);
             this.statusBar1.Name = "statusBar1";
-            this.statusBar1.Size = new System.Drawing.Size(595, 23);
+            this.statusBar1.Size = new System.Drawing.Size(690, 23);
             this.statusBar1.SizingGrip = false;
             this.statusBar1.TabIndex = 14;
             this.statusBar1.Text = "Ready";
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(378, 587);
+            this.label3.Location = new System.Drawing.Point(382, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(117, 12);
             this.label3.TabIndex = 31;
@@ -628,7 +354,7 @@ namespace ScanMaster.GUI
             // 
             // updateNoiseResultsbutton
             // 
-            this.updateNoiseResultsbutton.Location = new System.Drawing.Point(381, 602);
+            this.updateNoiseResultsbutton.Location = new System.Drawing.Point(385, 31);
             this.updateNoiseResultsbutton.Name = "updateNoiseResultsbutton";
             this.updateNoiseResultsbutton.Size = new System.Drawing.Size(18, 23);
             this.updateNoiseResultsbutton.TabIndex = 32;
@@ -639,52 +365,333 @@ namespace ScanMaster.GUI
             // noiseResultsLabel
             // 
             this.noiseResultsLabel.ForeColor = System.Drawing.Color.Blue;
-            this.noiseResultsLabel.Location = new System.Drawing.Point(405, 603);
+            this.noiseResultsLabel.Location = new System.Drawing.Point(409, 32);
             this.noiseResultsLabel.Name = "noiseResultsLabel";
             this.noiseResultsLabel.Size = new System.Drawing.Size(143, 24);
             this.noiseResultsLabel.TabIndex = 33;
             this.noiseResultsLabel.Text = "...";
             this.noiseResultsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // analog1Graph
+            // 
+            this.analog1Graph.BackColor = System.Drawing.Color.Transparent;
+            this.analog1Graph.BorderlineColor = System.Drawing.Color.Black;
+            this.analog1Graph.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea1.BackColor = System.Drawing.Color.Black;
+            chartArea1.Name = "ChartArea1";
+            this.analog1Graph.ChartAreas.Add(chartArea1);
+            this.analog1Graph.Location = new System.Drawing.Point(10, 19);
+            this.analog1Graph.Name = "analog1Graph";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series1.Name = "analog1Plot";
+            this.analog1Graph.Series.Add(series1);
+            this.analog1Graph.Size = new System.Drawing.Size(582, 133);
+            this.analog1Graph.TabIndex = 57;
+            this.analog1Graph.Text = "chart1";
+            // 
+            // analog2Graph
+            // 
+            this.analog2Graph.BackColor = System.Drawing.Color.Transparent;
+            this.analog2Graph.BorderlineColor = System.Drawing.Color.Black;
+            this.analog2Graph.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea2.BackColor = System.Drawing.Color.Black;
+            chartArea2.Name = "ChartArea1";
+            this.analog2Graph.ChartAreas.Add(chartArea2);
+            this.analog2Graph.Location = new System.Drawing.Point(10, 162);
+            this.analog2Graph.Name = "analog2Graph";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series2.Name = "analog2Plot";
+            this.analog2Graph.Series.Add(series2);
+            this.analog2Graph.Size = new System.Drawing.Size(582, 133);
+            this.analog2Graph.TabIndex = 58;
+            this.analog2Graph.Text = "chart1";
+            // 
+            // differenceGraph
+            // 
+            this.differenceGraph.BackColor = System.Drawing.Color.Transparent;
+            this.differenceGraph.BorderlineColor = System.Drawing.Color.Black;
+            this.differenceGraph.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea3.BackColor = System.Drawing.Color.Black;
+            chartArea3.Name = "ChartArea1";
+            this.differenceGraph.ChartAreas.Add(chartArea3);
+            this.differenceGraph.Location = new System.Drawing.Point(13, 19);
+            this.differenceGraph.Name = "differenceGraph";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series3.Name = "differencePlot";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series4.Name = "differenceAvgPlot";
+            this.differenceGraph.Series.Add(series3);
+            this.differenceGraph.Series.Add(series4);
+            this.differenceGraph.Size = new System.Drawing.Size(351, 280);
+            this.differenceGraph.TabIndex = 59;
+            this.differenceGraph.Text = "chart1";
+            // 
+            // tofGraph
+            // 
+            this.tofGraph.BackColor = System.Drawing.Color.Transparent;
+            this.tofGraph.BorderlineColor = System.Drawing.Color.Black;
+            this.tofGraph.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea4.BackColor = System.Drawing.Color.Black;
+            chartArea4.Name = "ChartArea1";
+            this.tofGraph.ChartAreas.Add(chartArea4);
+            this.tofGraph.Location = new System.Drawing.Point(16, 19);
+            this.tofGraph.Name = "tofGraph";
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series5.Name = "tofOnPlot";
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series6.Name = "tofOffPlot";
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series7.Name = "tofOnAveragePlot";
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series8.Name = "tofOffAveragePlot";
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series9.Name = "tofFitPlot";
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series10.Name = "tofLowCursor";
+            series11.ChartArea = "ChartArea1";
+            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series11.Name = "tofHighCursor";
+            this.tofGraph.Series.Add(series5);
+            this.tofGraph.Series.Add(series6);
+            this.tofGraph.Series.Add(series7);
+            this.tofGraph.Series.Add(series8);
+            this.tofGraph.Series.Add(series9);
+            this.tofGraph.Series.Add(series10);
+            this.tofGraph.Series.Add(series11);
+            this.tofGraph.Size = new System.Drawing.Size(351, 280);
+            this.tofGraph.TabIndex = 60;
+            this.tofGraph.Text = "chart1";
+            // 
+            // pmtGraph
+            // 
+            this.pmtGraph.BackColor = System.Drawing.Color.Transparent;
+            this.pmtGraph.BorderlineColor = System.Drawing.Color.Black;
+            this.pmtGraph.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
+            chartArea5.BackColor = System.Drawing.Color.Black;
+            chartArea5.Name = "ChartArea1";
+            this.pmtGraph.ChartAreas.Add(chartArea5);
+            this.pmtGraph.Location = new System.Drawing.Point(6, 19);
+            this.pmtGraph.Name = "pmtGraph";
+            series12.ChartArea = "ChartArea1";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series12.Name = "pmtOnPlot";
+            series13.ChartArea = "ChartArea1";
+            series13.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series13.Name = "pmtOffPlot";
+            series14.ChartArea = "ChartArea1";
+            series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series14.Name = "pmtOnAvgPlot";
+            series15.ChartArea = "ChartArea1";
+            series15.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series15.Name = "pmtOffAvgPlot";
+            series16.ChartArea = "ChartArea1";
+            series16.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series16.Name = "pmtFitPlot";
+            series17.ChartArea = "ChartArea1";
+            series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series17.Name = "pmtLowCursor";
+            series18.ChartArea = "ChartArea1";
+            series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series18.Name = "pmtHighCursor";
+            this.pmtGraph.Series.Add(series12);
+            this.pmtGraph.Series.Add(series13);
+            this.pmtGraph.Series.Add(series14);
+            this.pmtGraph.Series.Add(series15);
+            this.pmtGraph.Series.Add(series16);
+            this.pmtGraph.Series.Add(series17);
+            this.pmtGraph.Series.Add(series18);
+            this.pmtGraph.Size = new System.Drawing.Size(583, 280);
+            this.pmtGraph.TabIndex = 61;
+            this.pmtGraph.Text = "chart1";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.endTOFCursorPositionTextBox);
+            this.groupBox1.Controls.Add(this.startTOFCursorPositionTextBox);
+            this.groupBox1.Controls.Add(this.updateTOFCursorsButton);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.tofGraph);
+            this.groupBox1.Location = new System.Drawing.Point(9, 8);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(493, 317);
+            this.groupBox1.TabIndex = 62;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "TOF";
+            // 
+            // endTOFCursorPositionTextBox
+            // 
+            this.endTOFCursorPositionTextBox.Location = new System.Drawing.Point(380, 88);
+            this.endTOFCursorPositionTextBox.Name = "endTOFCursorPositionTextBox";
+            this.endTOFCursorPositionTextBox.Size = new System.Drawing.Size(100, 20);
+            this.endTOFCursorPositionTextBox.TabIndex = 65;
+            this.endTOFCursorPositionTextBox.Text = "1";
+            // 
+            // startTOFCursorPositionTextBox
+            // 
+            this.startTOFCursorPositionTextBox.Location = new System.Drawing.Point(380, 35);
+            this.startTOFCursorPositionTextBox.Name = "startTOFCursorPositionTextBox";
+            this.startTOFCursorPositionTextBox.Size = new System.Drawing.Size(100, 20);
+            this.startTOFCursorPositionTextBox.TabIndex = 64;
+            this.startTOFCursorPositionTextBox.Text = "0";
+            // 
+            // updateTOFCursorsButton
+            // 
+            this.updateTOFCursorsButton.Location = new System.Drawing.Point(380, 129);
+            this.updateTOFCursorsButton.Name = "updateTOFCursorsButton";
+            this.updateTOFCursorsButton.Size = new System.Drawing.Size(100, 41);
+            this.updateTOFCursorsButton.TabIndex = 63;
+            this.updateTOFCursorsButton.Text = "update TOF gates";
+            this.updateTOFCursorsButton.UseVisualStyleBackColor = true;
+            this.updateTOFCursorsButton.Click += new System.EventHandler(this.updateTOFCursorsButton_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(377, 72);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 13);
+            this.label5.TabIndex = 62;
+            this.label5.Text = "Gate: end";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(377, 19);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 13);
+            this.label4.TabIndex = 61;
+            this.label4.Text = "Gate: start";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.analog1Graph);
+            this.groupBox2.Controls.Add(this.analog2Graph);
+            this.groupBox2.Location = new System.Drawing.Point(508, 8);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(604, 317);
+            this.groupBox2.TabIndex = 61;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Analog";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.noiseResultsLabel);
+            this.groupBox3.Controls.Add(this.spectrumFitModeCombo);
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.spectrumFitFunctionCombo);
+            this.groupBox3.Controls.Add(this.spectrumFitResultsLabel);
+            this.groupBox3.Controls.Add(this.updateSpectrumFitButton);
+            this.groupBox3.Controls.Add(this.tofFitDataSelectCombo);
+            this.groupBox3.Controls.Add(this.updateNoiseResultsbutton);
+            this.groupBox3.Controls.Add(this.updateTOFFitButton);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.tofFitResultsLabel);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.tofFitFunctionCombo);
+            this.groupBox3.Controls.Add(this.tofFitModeCombo);
+            this.groupBox3.Location = new System.Drawing.Point(12, 650);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(1100, 70);
+            this.groupBox3.TabIndex = 63;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Fitting";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.endPMTCursorPositionTextBox);
+            this.groupBox4.Controls.Add(this.pmtGraph);
+            this.groupBox4.Controls.Add(this.startPMTCursorPositionTextBox);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.updatePMTCursorsButton);
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Location = new System.Drawing.Point(397, 331);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(715, 313);
+            this.groupBox4.TabIndex = 64;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Scan";
+            // 
+            // endPMTCursorPositionTextBox
+            // 
+            this.endPMTCursorPositionTextBox.Location = new System.Drawing.Point(598, 88);
+            this.endPMTCursorPositionTextBox.Name = "endPMTCursorPositionTextBox";
+            this.endPMTCursorPositionTextBox.Size = new System.Drawing.Size(100, 20);
+            this.endPMTCursorPositionTextBox.TabIndex = 70;
+            this.endPMTCursorPositionTextBox.Text = "10";
+            // 
+            // startPMTCursorPositionTextBox
+            // 
+            this.startPMTCursorPositionTextBox.Location = new System.Drawing.Point(598, 35);
+            this.startPMTCursorPositionTextBox.Name = "startPMTCursorPositionTextBox";
+            this.startPMTCursorPositionTextBox.Size = new System.Drawing.Size(100, 20);
+            this.startPMTCursorPositionTextBox.TabIndex = 69;
+            this.startPMTCursorPositionTextBox.Text = "-10";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(595, 19);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(56, 13);
+            this.label7.TabIndex = 66;
+            this.label7.Text = "Gate: start";
+            // 
+            // updatePMTCursorsButton
+            // 
+            this.updatePMTCursorsButton.Location = new System.Drawing.Point(598, 129);
+            this.updatePMTCursorsButton.Name = "updatePMTCursorsButton";
+            this.updatePMTCursorsButton.Size = new System.Drawing.Size(100, 41);
+            this.updatePMTCursorsButton.TabIndex = 68;
+            this.updatePMTCursorsButton.Text = "update Scan gates";
+            this.updatePMTCursorsButton.UseVisualStyleBackColor = true;
+            this.updatePMTCursorsButton.Click += new System.EventHandler(this.updatePMTCursorsButton_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(595, 72);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 13);
+            this.label6.TabIndex = 67;
+            this.label6.Text = "Gate: end";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.differenceGraph);
+            this.groupBox5.Location = new System.Drawing.Point(12, 331);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(379, 313);
+            this.groupBox5.TabIndex = 65;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Difference";
+            // 
             // StandardViewerWindow
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(970, 659);
-            this.Controls.Add(this.noiseResultsLabel);
-            this.Controls.Add(this.updateNoiseResultsbutton);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(1121, 749);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.tofFitDataSelectCombo);
-            this.Controls.Add(this.updateSpectrumFitButton);
-            this.Controls.Add(this.updateTOFFitButton);
-            this.Controls.Add(this.spectrumFitResultsLabel);
-            this.Controls.Add(this.tofFitResultsLabel);
-            this.Controls.Add(this.spectrumFitFunctionCombo);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.spectrumFitModeCombo);
-            this.Controls.Add(this.tofFitFunctionCombo);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.tofFitModeCombo);
-            this.Controls.Add(this.tofGraph);
-            this.Controls.Add(this.differenceGraph);
-            this.Controls.Add(this.pmtGraph);
-            this.Controls.Add(this.analog2Graph);
-            this.Controls.Add(this.analog1Graph);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "StandardViewerWindow";
             this.Text = "Standard View";
             this.Closing += new System.ComponentModel.CancelEventHandler(this.WindowClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.analog1Graph)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.analog2Graph)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pmtGraph)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pmtLowCursor)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pmtHighCursor)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.differenceGraph)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tofGraph)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tofLowCursor)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tofHighCursor)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -693,21 +700,30 @@ namespace ScanMaster.GUI
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.analog1Graph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.analog2Graph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.differenceGraph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tofGraph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pmtGraph)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
 		#endregion
-
-
-		private void TOFCursorMoved(object sender, NationalInstruments.UI.AfterMoveXYCursorEventArgs e)
-		{
-			viewer.TOFCursorMoved();
-		}
-
-		private void PMTCursorMoved(object sender, NationalInstruments.UI.AfterMoveXYCursorEventArgs e)
-		{
-			viewer.PMTCursorMoved();
-		}
+        private void updateTOFCursorsButton_Click(object sender, EventArgs e)
+        {
+            viewer.TOFCursorMoved();
+        }
+        private void updatePMTCursorsButton_Click(object sender, EventArgs e)
+        {
+            viewer.PMTCursorMoved();
+        }
 		private void tofFitModeCombo_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			viewer.TOFFitModeChanged(((ComboBox)sender).SelectedIndex);
@@ -758,27 +774,27 @@ namespace ScanMaster.GUI
 
 		public void ClearRealtimeSpectra()
 		{
-			ClearNIPlot(pmtGraph, pmtOnPlot);
-			ClearNIPlot(pmtGraph, pmtOffPlot);
-			ClearNIPlot(differenceGraph, differencePlot);
-			ClearNIPlot(analog1Graph, analog1Plot);
-			ClearNIPlot(analog2Graph, analog2Plot);
+			ClearNIPlot(pmtGraph, pmtGraph.Series.FindByName("pmtOnPlot"));
+			ClearNIPlot(pmtGraph, pmtGraph.Series.FindByName("pmtOffPlot"));
+			ClearNIPlot(differenceGraph, differenceGraph.Series.FindByName("differencePlot"));
+			ClearNIPlot(analog1Graph, analog1Graph.Series.FindByName("analog1Plot"));
+            ClearNIPlot(analog2Graph, analog2Graph.Series.FindByName("analog2Plot"));
 		}
 
 		public void ClearRealtimeNotAnalog()
 		{
-			ClearNIPlot(tofGraph, tofOnPlot);
-			ClearNIPlot(tofGraph, tofOffPlot);
-			ClearNIPlot(pmtGraph, pmtOnPlot);
-			ClearNIPlot(pmtGraph, pmtOffPlot);
-			ClearNIPlot(differenceGraph, differencePlot);
+			ClearNIPlot(tofGraph, tofGraph.Series.FindByName("tofOnPlot"));
+			ClearNIPlot(tofGraph, tofGraph.Series.FindByName("tofOffPlot"));
+			ClearNIPlot(pmtGraph, pmtGraph.Series.FindByName("pmtOnPlot"));
+			ClearNIPlot(pmtGraph, pmtGraph.Series.FindByName("pmtOffPlot"));
+			ClearNIPlot(differenceGraph, differenceGraph.Series.FindByName("differencePlot"));
 		}
 
 		public void ClearSpectrumFit()
 		{
-			ClearNIPlot(pmtGraph, pmtFitPlot);
+            ClearNIPlot(pmtGraph, pmtGraph.Series.FindByName("pmtFitPlot"));
 		}
-
+        
 		public Range SpectrumAxes
 		{
 			set
@@ -789,18 +805,18 @@ namespace ScanMaster.GUI
 				SetGraphXAxisRange(analog2Graph, value.Minimum, value.Maximum);
 			}
 		}
-
+        
 		public Range SpectrumGate
 		{
 			set
 			{
-				MoveCursor(pmtGraph, pmtLowCursor, value.Minimum);
-				MoveCursor(pmtGraph, pmtHighCursor, value.Maximum);
+				MoveCursor(pmtGraph, pmtGraph.Series.FindByName("pmtLowCursor"), value.Minimum);
+				MoveCursor(pmtGraph, pmtGraph.Series.FindByName("pmtHighCursor"), value.Maximum);
 			}
 			get
 			{
-				double min = GetCursorPosition(pmtGraph, pmtLowCursor);
-				double max = GetCursorPosition(pmtGraph, pmtHighCursor);
+				double min = GetCursorPosition(pmtGraph, pmtGraph.Series.FindByName("pmtLowCursor"));
+				double max = GetCursorPosition(pmtGraph, pmtGraph.Series.FindByName("pmtHighCursor"));
 				if (max <= min) max = min + 1; //highly arbitrary
 				return new Range(min, max);
 			}
@@ -809,133 +825,207 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-				MoveCursor(tofGraph, tofLowCursor, value.Minimum);
-				MoveCursor(tofGraph, tofHighCursor, value.Maximum);
+				MoveCursor(tofGraph, tofGraph.Series.FindByName("tofLowCursor"), value.Minimum);
+				MoveCursor(tofGraph, tofGraph.Series.FindByName("tofHighCursor"), value.Maximum);
 			}
 			get
 			{
-                double min = GetCursorPosition(tofGraph, tofLowCursor);
-                double max = GetCursorPosition(tofGraph, tofHighCursor);
+                double min = GetCursorPosition(tofGraph, tofGraph.Series.FindByName("tofLowCursor"));
+                double max = GetCursorPosition(tofGraph, tofGraph.Series.FindByName("tofHighCursor"));
                 if (max <= min) max = min + 1; //also somewhat arbitrary
                 return new Range(min, max);
 			}
 		}
 
-		public void PlotOnTOF(TOF t) { PlotY(tofGraph, tofOnPlot, t.GateStartTime, t.ClockPeriod, t.Data); }
-		public void PlotOffTOF(TOF t) { PlotY(tofGraph, tofOffPlot, t.GateStartTime, t.ClockPeriod, t.Data); }
+		public void PlotOnTOF(TOF t) { PlotY(tofGraph, tofGraph.Series.FindByName("tofOnPlot"), t.GateStartTime, t.ClockPeriod, t.Data); }
+		public void PlotOffTOF(TOF t) { PlotY(tofGraph, tofGraph.Series.FindByName("tofOffPlot"), t.GateStartTime, t.ClockPeriod, t.Data); }
 		public void PlotAverageOnTOF(TOF t)
 		{
-			PlotY(tofGraph, tofOnAveragePlot, t.GateStartTime, t.ClockPeriod, t.Data);
+            PlotY(tofGraph, tofGraph.Series.FindByName("tofOnAveragePlot"), t.GateStartTime, t.ClockPeriod, t.Data);
 		}
 		public void PlotAverageOffTOF(TOF t)
 		{
-			PlotY(tofGraph, tofOffAveragePlot, t.GateStartTime, t.ClockPeriod, t.Data);
+			PlotY(tofGraph, tofGraph.Series.FindByName("tofOffAveragePlot"), t.GateStartTime, t.ClockPeriod, t.Data);
 		}
 		public void AppendToAnalog1(double[] x, double[] y)
 		{
-			PlotXYAppend(analog1Graph, analog1Plot, x, y);
+			PlotXYAppend(analog1Graph, analog1Graph.Series.FindByName("analog1Plot"), x, y);
 		}
 
 		public void AppendToAnalog2(double[] x, double[] y)
 		{
-			PlotXYAppend(analog2Graph, analog2Plot, x, y);
+            PlotXYAppend(analog2Graph, analog2Graph.Series.FindByName("analog2Plot"), x, y);
 		}
 		public void AppendToPMTOn(double[] x, double[] y)
 		{
-			PlotXYAppend(pmtGraph, pmtOnPlot, x, y);
+			PlotXYAppend(pmtGraph, pmtGraph.Series.FindByName("pmtOnPlot"), x, y);
 		}
 		public void AppendToPMTOff(double[] x, double[] y)
 		{
-			PlotXYAppend(pmtGraph, pmtOffPlot, x, y);
+			PlotXYAppend(pmtGraph, pmtGraph.Series.FindByName("pmtOffPlot"), x, y);
 		}
 		public void AppendToDifference(double[] x, double[] y)
 		{
-			PlotXYAppend(differenceGraph, differencePlot, x, y);
+			PlotXYAppend(differenceGraph, differenceGraph.Series.FindByName("differencePlot"), x, y);
 		}
 
 		public void PlotAveragePMTOn(double[] x, double[] y)
 		{
-			PlotXY(pmtGraph, pmtOnAvgPlot, x, y);
+			PlotXY(pmtGraph, pmtGraph.Series.FindByName("pmtOnAvgPlot"), x, y);
 		}
 		public void PlotAveragePMTOff(double[] x, double[] y)
 		{
-			PlotXY(pmtGraph, pmtOffAvgPlot, x, y);
+			PlotXY(pmtGraph, pmtGraph.Series.FindByName("pmtOffAvgPlot"), x, y);
 		}
 		public void PlotAverageDifference(double[] x, double[] y)
 		{
-			PlotXY(differenceGraph, differenceAvgPlot, x, y);
+			PlotXY(differenceGraph, differenceGraph.Series.FindByName("differenceAvgPlot"), x, y);
 		}
 		public void PlotSpectrumFit(double[] x, double[] y)
 		{
-			PlotXY(pmtGraph, pmtFitPlot, x, y);
+			PlotXY(pmtGraph, pmtGraph.Series.FindByName("pmtFitPlot"), x, y);
 		}
 
 		public void ClearTOFFit()
 		{
-			ClearNIPlot(tofGraph, tofFitPlot);
+                ClearNIPlot(tofGraph, tofGraph.Series.FindByName("tofFitPlot"));
 		}
 
 		public void PlotTOFFit(int start, int period, double[] data)
 		{
-			PlotY(tofGraph, tofFitPlot, start, period, data);
+			PlotY(tofGraph, tofGraph.Series.FindByName("tofFitPlot"), start, period, data);
 		}
 
 		// UI delegates and thread-safe helpers
-		private delegate void ClearDataDelegate();
-		private void ClearNIGraph(Graph graph)
+		private delegate void ClearChartDelegate(Chart chart);
+		private void ClearNIGraph(Chart chart)
 		{
-			graph.Invoke(new ClearDataDelegate(graph.ClearData));
+            chart.Invoke(new ClearChartDelegate(clearChartHelper), new Object[] {chart});
 		}
-		private void ClearNIPlot(Graph graph, Plot plot)
+        private void clearChartHelper(Chart chart)
+        {
+            foreach (Series s in chart.Series)
+            {
+                s.Points.Clear();
+            }
+        }
+
+        private delegate void ClearSeriesDelegate(Series s);
+		private void ClearNIPlot(Chart graph, Series plot)
 		{
-			graph.Invoke(new ClearDataDelegate(plot.ClearData));
+            if (graph.IsHandleCreated)
+            {
+                graph.Invoke(new ClearSeriesDelegate(clearSeriesHelper), new Object[] { plot });
+            }
 		}
-		private void SetGraphXAxisRangeHelper(XYGraph graph, double start, double end)
+        private void clearSeriesHelper(Series s)
+        {
+            s.Points.Clear();
+
+        }
+		private void SetGraphXAxisRangeHelper(Chart graph, double start, double end)
 		{
-			graph.XAxes[0].Range = new Range(start, end);
+            graph.ChartAreas[0].AxisX.Minimum = start;
+            graph.ChartAreas[0].AxisX.Maximum = end;
 		}
-		private delegate void SetGraphXAxisRangeDelegate(XYGraph graph, double start, double end);
-		private void SetGraphXAxisRange(XYGraph graph, double start, double end)
+		private delegate void SetGraphXAxisRangeDelegate(Chart graph, double start, double end);
+		private void SetGraphXAxisRange(Chart graph, double start, double end)
 		{
 			graph.Invoke(new SetGraphXAxisRangeDelegate(SetGraphXAxisRangeHelper),
 				new Object[] { graph, start, end });
 		}
 		private delegate void PlotXYDelegate(double[] x, double[] y);
-		private void PlotXYAppend(Graph graph, ScatterPlot plot, double[] x, double[] y)
+
+        private delegate void seriesAppendDelegate(Series plot, double[] x, double[] y);
+		private void PlotXYAppend(Chart graph, Series plot, double[] x, double[] y)
 		{
-			graph.Invoke(new PlotXYDelegate(plot.PlotXYAppend), new Object[] { x, y });
+            graph.Invoke(new seriesAppendDelegate(seriesAppendHelper), new Object[] { plot, x, y });
 		}
-		private void PlotXY(Graph graph, ScatterPlot plot, double[] x, double[] y)
+        private void seriesAppendHelper(Series plot, double[] x, double[] y)
+        {
+            lock (this)
+            {
+                for (int i = 0; i < x.Length; i++)
+                {
+                    plot.Points.AddXY(x[i], y[i]);
+                }
+                plot.Sort(PointSortOrder.Ascending, "X");
+            }
+        }
+
+        private delegate void plotSeriesDelegate(Series plot,
+          double[] x, double[] y);
+        private void plotSeriesHelper(Series plot,
+            double[] x, double[] y)
+        {
+            lock (this)
+            {
+                plot.Points.Clear();
+                for (int i = 0; i < x.Length; i++)
+                {
+                    plot.Points.AddXY(x[i], y[i]);
+                }
+                plot.Sort(PointSortOrder.Ascending, "X");
+            }
+        }
+        private void PlotXY(Chart figure, Series plot, double[] x, double[] y)
+        {
+            figure.Invoke(new plotSeriesDelegate(plotSeriesHelper), new object[] { plot, x, y });
+        }
+
+
+
+
+        private delegate void PlotYDelegate(Chart c, Series s, double start, double inc, double[] yData);
+		private void PlotY(Chart graph, Series p, double start, double inc, double[] ydata)
 		{
-			graph.Invoke(new PlotXYDelegate(plot.PlotXY), new Object[] { x, y });
+            graph.Invoke(new PlotYDelegate(plotYHelper), new Object[] { graph, p, start, inc, ydata});
 		}
-		private delegate void PlotYDelegate(double[] yData, double start, double inc);
-		private void PlotY(Graph graph, WaveformPlot p, double start, double inc, double[] ydata)
+        private void plotYHelper(Chart chart, Series series, double start, double inc, double[] ydata)
+        {
+            double[] xValues = new double[ydata.Length];
+            for(int i = 0; i < xValues.Length; i++)
+            {
+                xValues[i] = start + inc * i;
+            }
+            PlotXY(chart, series, xValues, ydata);
+        }
+
+        
+		private void MoveCursorHelper(Chart c, Series s, double x)
 		{
-			graph.Invoke(new PlotYDelegate(p.PlotY), new Object[] { ydata, start, inc });
+			s.Points.Clear();
+            s.Points.AddXY(x, c.ChartAreas[0].AxisY.Minimum);
+            s.Points.AddXY(x, c.ChartAreas[0].AxisY.Maximum);
+		}
+		private delegate void MoveCursorDelegate(Chart c, Series s, double x);
+		private void MoveCursor(Chart c, Series s, double x)
+		{
+			c.Invoke(new MoveCursorDelegate(MoveCursorHelper), new Object[] { c, s, x });
 		}
 
-		private void MoveCursorHelper(XYCursor cursor, double x)
+		private delegate double GetCursorPositionDelegate(Series s);
+		private double GetCursorPositionHelper(Series s)
 		{
-			cursor.XPosition = x;
+			return s.Points[0].XValue;
 		}
-		private delegate void MoveCursorDelegate(XYCursor cursor, double x);
-		private void MoveCursor(Graph graph, XYCursor cursor, double x)
-		{
-			graph.Invoke(new MoveCursorDelegate(MoveCursorHelper), new Object[] { cursor, x });
-		}
-
-		private delegate double GetCursorPositionDelegate(XYCursor cursor);
-		private double GetCursorPositionHelper(XYCursor cursor)
-		{
-			return cursor.XPosition;
-		}
-		private double GetCursorPosition(Graph graph, XYCursor cursor)
+		private double GetCursorPosition(Chart graph, Series series)
 		{
 			double x = (double)graph.Invoke(new GetCursorPositionDelegate(GetCursorPositionHelper),
-				new Object[] { cursor });
+				new Object[] { series });
 			return x;
 		}
+        public void InitializeCursors()
+        {
+            MoveCursor(tofGraph, tofGraph.Series.FindByName("tofLowCursor"), tofGraph.ChartAreas[0].AxisX.Minimum);
+            MoveCursor(tofGraph, tofGraph.Series.FindByName("tofHighCursor"), tofGraph.ChartAreas[0].AxisX.Maximum);
+            MoveCursor(pmtGraph, pmtGraph.Series.FindByName("pmtLowCursor"), pmtGraph.ChartAreas[0].AxisX.Minimum);
+            MoveCursor(pmtGraph, pmtGraph.Series.FindByName("pmtHighCursor"), pmtGraph.ChartAreas[0].AxisX.Maximum);
+            startTOFCursorPositionTextBox.Text = tofGraph.ChartAreas[0].AxisX.Minimum.ToString();
+            endTOFCursorPositionTextBox.Text = tofGraph.ChartAreas[0].AxisX.Maximum.ToString();
+            startPMTCursorPositionTextBox.Text = pmtGraph.ChartAreas[0].AxisX.Minimum.ToString();
+            endPMTCursorPositionTextBox.Text = pmtGraph.ChartAreas[0].AxisX.Maximum.ToString();
+        }
 
 		public void SetLabel(Label label, string text)
 		{
@@ -1010,6 +1100,10 @@ namespace ScanMaster.GUI
         {
             viewer.SetGatesToDefault();
         }
+
+
+
+
 
 
 	}

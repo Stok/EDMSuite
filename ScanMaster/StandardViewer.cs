@@ -109,16 +109,19 @@ namespace ScanMaster.GUI
 
 			// prepare the front panel
 			window.ClearAll();
-			window.SpectrumAxes = new NationalInstruments.UI.Range(
+			window.SpectrumAxes = new Range(
 				(double)outputSettings["start"], (double)outputSettings["end"]);
-			window.SpectrumGate = new NationalInstruments.UI.Range(startSpectrumGate, endSpectrumGate);
+			window.SpectrumGate = new Range(startSpectrumGate, endSpectrumGate);
             startTOFGate = (int)shotSettings["gateStartTime"];
             endTOFGate = startTOFGate + (int)shotSettings["gateLength"] * (int)shotSettings["clockPeriod"];
-            window.TOFGate = new NationalInstruments.UI.Range(startTOFGate, endTOFGate);
+            window.TOFGate = new Range(startTOFGate, endTOFGate);
 
 			// disable the fit function selectors
             window.SetTofFitFunctionComboState(false);
             window.SetSpectrumFitFunctionComboState(false);
+
+            //initialize cursors
+            window.InitializeCursors();
 		}
 
 		public void AcquireStop()
@@ -420,8 +423,8 @@ namespace ScanMaster.GUI
 			endTOFGate = tof.GateStartTime + tof.ClockPeriod*tof.Length;
 			UpdateTOFAveragePlots();
 			UpdatePMTAveragePlots();
-			window.SpectrumGate = new NationalInstruments.UI.Range(startSpectrumGate, endSpectrumGate);
-			window.TOFGate = new NationalInstruments.UI.Range(startTOFGate, endTOFGate);
+			window.SpectrumGate = new Range(startSpectrumGate, endSpectrumGate);
+			window.TOFGate = new Range(startTOFGate, endTOFGate);
 			if (spectrumFitMode == FitMode.Average) FitAndPlotSpectrum(averageScan);
 			if (tofFitMode == FitMode.Average) FitAverageTOF();
 		}
@@ -465,7 +468,7 @@ namespace ScanMaster.GUI
 		{
 			Scan averageScan = Controller.GetController().DataStore.AverageScan;
 			if (averageScan.Points.Count == 0) return;
-            window.SpectrumAxes = new NationalInstruments.UI.Range(averageScan.MinimumScanParameter,
+            window.SpectrumAxes = new Range(averageScan.MinimumScanParameter,
                  averageScan.MaximumScanParameter);
 			window.PlotAveragePMTOn(averageScan.ScanParameterArray,
 				averageScan.GetTOFOnIntegralArray(0,
@@ -548,7 +551,7 @@ namespace ScanMaster.GUI
             if ((double[])Environs.Hardware.GetInfo("defaultGate") != null)
             {
             double[] defaultGate = (double[])Environs.Hardware.GetInfo("defaultGate");
-            window.TOFGate = new NationalInstruments.UI.Range(defaultGate[0] - defaultGate[1],defaultGate[0] + defaultGate[1]);
+            window.TOFGate = new Range(defaultGate[0] - defaultGate[1],defaultGate[0] + defaultGate[1]);
             TOFCursorMoved();
             }
         }

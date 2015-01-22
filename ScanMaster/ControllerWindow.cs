@@ -4,9 +4,6 @@ using System.Windows.Forms;
 using System.Text;
 using System.Threading;
 
-using NationalInstruments.UI;
-using NationalInstruments.UI.WindowsForms;
-
 using Data;
 using DAQ.FakeData;
 using System.Collections.Generic;
@@ -37,7 +34,6 @@ namespace ScanMaster.GUI
 		private System.Windows.Forms.MenuItem menuItem6;
 		private System.ComponentModel.IContainer components;
 		private System.Windows.Forms.StatusBar statusBar1;
-		private NationalInstruments.UI.XAxis pmtXAxis;
 		private System.Windows.Forms.MenuItem menuItem7;
 		private System.Windows.Forms.MenuItem menuItem12;
 		private System.Windows.Forms.MenuItem menuItem13;
@@ -133,7 +129,6 @@ namespace ScanMaster.GUI
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.schonMenu = new System.Windows.Forms.MenuItem();
-            this.pmtXAxis = new NationalInstruments.UI.XAxis();
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.renameButton = new System.Windows.Forms.Button();
             this.currentProfileLabel = new System.Windows.Forms.Label();
@@ -291,10 +286,6 @@ namespace ScanMaster.GUI
             // 
             this.schonMenu.Index = 5;
             this.schonMenu.Text = "Schon\'s menu";
-            // 
-            // pmtXAxis
-            // 
-            this.pmtXAxis.Mode = NationalInstruments.UI.AxisMode.Fixed;
             // 
             // statusBar1
             // 
