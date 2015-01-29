@@ -109,12 +109,12 @@ namespace ScanMaster.GUI
 
 			// prepare the front panel
 			window.ClearAll();
-			window.SpectrumAxes = new Range(
+			window.SpectrumAxes = new PlotParameters(
 				(double)outputSettings["start"], (double)outputSettings["end"]);
-			window.SpectrumGate = new Range(startSpectrumGate, endSpectrumGate);
+			window.SpectrumGate = new PlotParameters(startSpectrumGate, endSpectrumGate, (int)outputSettings["pointsPerScan"]);
             startTOFGate = (int)shotSettings["gateStartTime"];
             endTOFGate = startTOFGate + (int)shotSettings["gateLength"] * (int)shotSettings["clockPeriod"];
-            window.TOFGate = new Range(startTOFGate, endTOFGate);
+            window.TOFGate = new PlotParameters(startTOFGate, endTOFGate);
 
 			// disable the fit function selectors
             window.SetTofFitFunctionComboState(false);
@@ -423,8 +423,8 @@ namespace ScanMaster.GUI
 			endTOFGate = tof.GateStartTime + tof.ClockPeriod*tof.Length;
 			UpdateTOFAveragePlots();
 			UpdatePMTAveragePlots();
-			window.SpectrumGate = new Range(startSpectrumGate, endSpectrumGate);
-			window.TOFGate = new Range(startTOFGate, endTOFGate);
+            window.SpectrumGate = new PlotParameters(startSpectrumGate, endSpectrumGate/*, averageScan.Points.Count*/);
+			window.TOFGate = new PlotParameters(startTOFGate, endTOFGate);
 			if (spectrumFitMode == FitMode.Average) FitAndPlotSpectrum(averageScan);
 			if (tofFitMode == FitMode.Average) FitAverageTOF();
 		}
@@ -468,8 +468,8 @@ namespace ScanMaster.GUI
 		{
 			Scan averageScan = Controller.GetController().DataStore.AverageScan;
 			if (averageScan.Points.Count == 0) return;
-            window.SpectrumAxes = new Range(averageScan.MinimumScanParameter,
-                 averageScan.MaximumScanParameter);
+            window.SpectrumAxes = new PlotParameters(averageScan.MinimumScanParameter,
+                 averageScan.MaximumScanParameter, averageScan.Points.Count);
 			window.PlotAveragePMTOn(averageScan.ScanParameterArray,
 				averageScan.GetTOFOnIntegralArray(0,
 				startTOFGate, endTOFGate));
@@ -551,7 +551,7 @@ namespace ScanMaster.GUI
             if ((double[])Environs.Hardware.GetInfo("defaultGate") != null)
             {
             double[] defaultGate = (double[])Environs.Hardware.GetInfo("defaultGate");
-            window.TOFGate = new Range(defaultGate[0] - defaultGate[1],defaultGate[0] + defaultGate[1]);
+            window.TOFGate = new PlotParameters(defaultGate[0] - defaultGate[1],defaultGate[0] + defaultGate[1]);
             TOFCursorMoved();
             }
         }

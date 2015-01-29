@@ -154,6 +154,7 @@
       <Name>System.Windows.Forms</Name>
     </Reference>
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms.DataVisualization.Design" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -217,6 +218,11 @@
     <Compile Include="BasicBeamPatternPlugin.cs" />
     <Compile Include="ImagingPatternBuilder.cs" />
     <Compile Include="ImagingPatternPlugin.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="PulsedRFScanPatternBuilder2.cs" />
     <Compile Include="DAQMxAnalogInputPlugin.cs">
       <SubType>Code</SubType>
@@ -323,7 +329,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="QuantaRayYAGPlugin.cs" />
-    <Compile Include="Range.cs" />
+    <Compile Include="PlotParameters.cs" />
     <Compile Include="RollViewer.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -362,6 +368,12 @@
     </Compile>
     <Compile Include="TCLOutputPlugin.cs" />
     <Compile Include="TofFitter.cs" />
+    <Compile Include="TwoCursorChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TwoCursorChart.Designer.cs">
+      <DependentUpon>TwoCursorChart.cs</DependentUpon>
+    </Compile>
     <Compile Include="TTLSwitchPlugin.cs" />
     <Compile Include="Viewer.cs">
       <SubType>Code</SubType>
@@ -398,9 +410,16 @@
       <DependentUpon>StatisticsViewerWindow.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="TwoCursorChart.resx">
+      <DependentUpon>TwoCursorChart.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
