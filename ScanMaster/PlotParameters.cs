@@ -7,24 +7,24 @@ namespace ScanMaster.GUI
 {
     public class PlotParameters
     {
-
-        public double Maximum, Minimum, Interval;
+        public double Maximum, Minimum;
         public int PointsPerRange;
-
         public PlotParameters(double min, double max)
         {
             Maximum = max;
             Minimum = min;
-            Interval = Maximum - Minimum;
-            PointsPerRange = (int)Interval;
+            PointsPerRange = (int)GetInterval();
         }
         public PlotParameters(double min, double max, int pointsPerRange)
         {
             Maximum = max;
             Minimum = min;
-            Interval = Maximum - Minimum;
             PointsPerRange = pointsPerRange;
         }
-
+        public double GetInterval()
+        {
+            return Maximum - Minimum;
+        }
+            
     }
 }

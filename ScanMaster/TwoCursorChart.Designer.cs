@@ -145,7 +145,7 @@
 
         #endregion
 
-        public System.Windows.Forms.DataVisualization.Charting.Chart chart;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.TrackBar lowTrackBar;
         private System.Windows.Forms.TrackBar highTrackBar;
         private System.Windows.Forms.GroupBox CursorsGroupBox;

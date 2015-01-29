@@ -572,22 +572,22 @@ namespace ScanMaster.GUI
 		{
 			clearChart(analog1Graph);
 			clearChart(analog2Graph);
-			clearChart(pmtCursorChart.chart);
-			clearChart(tofCursorChart.chart);
+			pmtCursorChart.ClearChart();
+            tofCursorChart.ClearChart();
 			clearChart(differenceGraph);
 		}
 		public void ClearSpectra()
 		{
 			clearChart(analog1Graph);
 			clearChart(analog2Graph);
-			clearChart(pmtCursorChart.chart);
+            pmtCursorChart.ClearChart();
 			clearChart(differenceGraph);
 		}
 
 		public void ClearRealtimeSpectra()
 		{
-			clearSeries(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("onPlot"));
-			clearSeries(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("offPlot"));
+			pmtCursorChart.ClearSeries(pmtCursorChart.GetSeriesByName("onPlot"));
+			pmtCursorChart.ClearSeries(pmtCursorChart.GetSeriesByName("offPlot"));
 			clearSeries(differenceGraph, differenceGraph.Series.FindByName("differencePlot"));
 			clearSeries(analog1Graph, analog1Graph.Series.FindByName("analog1Plot"));
             clearSeries(analog2Graph, analog2Graph.Series.FindByName("analog2Plot"));
@@ -595,22 +595,23 @@ namespace ScanMaster.GUI
 
 		public void ClearRealtimeNotAnalog()
 		{
-			clearSeries(tofCursorChart.chart, tofCursorChart.GetSeriesByName("onPlot"));
-			clearSeries(tofCursorChart.chart, tofCursorChart.GetSeriesByName("offPlot"));
-			clearSeries(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("onPlot"));
-			clearSeries(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("offPlot"));
+			tofCursorChart.ClearSeries(tofCursorChart.GetSeriesByName("onPlot"));
+			tofCursorChart.ClearSeries(tofCursorChart.GetSeriesByName("offPlot"));
+            pmtCursorChart.ClearSeries(pmtCursorChart.GetSeriesByName("onPlot"));
+            pmtCursorChart.ClearSeries(pmtCursorChart.GetSeriesByName("offPlot"));
 			clearSeries(differenceGraph, differenceGraph.Series.FindByName("differencePlot"));
 		}
 
 		public void ClearSpectrumFit()
 		{
-            clearSeries(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("pmtFitPlot"));
+            pmtCursorChart.ClearSeries(pmtCursorChart.GetSeriesByName("pmtFitPlot"));
 		}
         
 		public PlotParameters SpectrumAxes
 		{
 			set
 			{
+                pmtCursorChart.SetChartAxes(value);
 				SetGraphXAxisRange(differenceGraph, value);
 				SetGraphXAxisRange(analog1Graph, value);
 				SetGraphXAxisRange(analog2Graph, value);
@@ -621,7 +622,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                pmtCursorChart.SetChartRange(value);
+                pmtCursorChart.SetChartAxesAndGate(value);
 				MoveLowCursor(pmtCursorChart, value.Minimum);
 				MoveHighCursor(pmtCursorChart, value.Maximum);
 			}
@@ -637,7 +638,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                tofCursorChart.SetChartRange(value);
+                tofCursorChart.SetChartAxesAndGate(value);
 			}
 			get
 			{
@@ -648,15 +649,15 @@ namespace ScanMaster.GUI
 			}
 		}
 
-		public void PlotOnTOF(TOF t) { PlotY(tofCursorChart.chart, tofCursorChart.GetSeriesByName("onPlot"), t.GateStartTime, t.ClockPeriod, t.Data); }
-		public void PlotOffTOF(TOF t) { PlotY(tofCursorChart.chart, tofCursorChart.GetSeriesByName("offPlot"), t.GateStartTime, t.ClockPeriod, t.Data); }
+		public void PlotOnTOF(TOF t) { tofCursorChart.PlotY(tofCursorChart.GetSeriesByName("onPlot"), t.GateStartTime, t.ClockPeriod, t.Data); }
+		public void PlotOffTOF(TOF t) { tofCursorChart.PlotY(tofCursorChart.GetSeriesByName("offPlot"), t.GateStartTime, t.ClockPeriod, t.Data); }
 		public void PlotAverageOnTOF(TOF t)
 		{
-            PlotY(tofCursorChart.chart, tofCursorChart.GetSeriesByName("onAveragePlot"), t.GateStartTime, t.ClockPeriod, t.Data);
+            tofCursorChart.PlotY(tofCursorChart.GetSeriesByName("onAveragePlot"), t.GateStartTime, t.ClockPeriod, t.Data);
 		}
 		public void PlotAverageOffTOF(TOF t)
 		{
-			PlotY(tofCursorChart.chart, tofCursorChart.GetSeriesByName("offAveragePlot"), t.GateStartTime, t.ClockPeriod, t.Data);
+			tofCursorChart.PlotY(tofCursorChart.GetSeriesByName("offAveragePlot"), t.GateStartTime, t.ClockPeriod, t.Data);
 		}
 		public void AppendToAnalog1(double[] x, double[] y)
 		{
@@ -670,11 +671,11 @@ namespace ScanMaster.GUI
 		public void AppendToPMTOn(double[] x, double[] y)
 		{
             Series a = pmtCursorChart.GetSeriesByName("onPlot");
-			PlotXYAppend(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("onPlot"), x, y);
+            pmtCursorChart.PlotXYAppend(pmtCursorChart.GetSeriesByName("onPlot"), x, y);
 		}
 		public void AppendToPMTOff(double[] x, double[] y)
 		{
-			PlotXYAppend(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("offPlot"), x, y);
+            pmtCursorChart.PlotXYAppend(pmtCursorChart.GetSeriesByName("offPlot"), x, y);
 		}
 		public void AppendToDifference(double[] x, double[] y)
 		{
@@ -683,11 +684,11 @@ namespace ScanMaster.GUI
 
 		public void PlotAveragePMTOn(double[] x, double[] y)
 		{
-			PlotXY(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("onAveragePlot"), x, y);
+            pmtCursorChart.PlotXY(pmtCursorChart.GetSeriesByName("onAveragePlot"), x, y);
 		}
 		public void PlotAveragePMTOff(double[] x, double[] y)
 		{
-			PlotXY(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("offAveragePlot"), x, y);
+            pmtCursorChart.PlotXY(pmtCursorChart.GetSeriesByName("offAveragePlot"), x, y);
 		}
 		public void PlotAverageDifference(double[] x, double[] y)
 		{
@@ -695,17 +696,17 @@ namespace ScanMaster.GUI
 		}
 		public void PlotSpectrumFit(double[] x, double[] y)
 		{
-			PlotXY(pmtCursorChart.chart, pmtCursorChart.GetSeriesByName("fitPlot"), x, y);
+			pmtCursorChart.PlotXY(pmtCursorChart.GetSeriesByName("fitPlot"), x, y);
 		}
 
 		public void ClearTOFFit()
 		{
-                clearSeries(tofCursorChart.chart, tofCursorChart.GetSeriesByName("fitPlot"));
+            tofCursorChart.ClearSeries(tofCursorChart.GetSeriesByName("fitPlot"));
 		}
 
 		public void PlotTOFFit(int start, int period, double[] data)
 		{
-			PlotY(tofCursorChart.chart, tofCursorChart.GetSeriesByName("fitPlot"), start, period, data);
+			tofCursorChart.PlotY(tofCursorChart.GetSeriesByName("fitPlot"), start, period, data);
 		}
 
 		// UI delegates and thread-safe helpers
@@ -752,7 +753,6 @@ namespace ScanMaster.GUI
 				new Object[] { graph, range });
 		}
 
-		private delegate void PlotXYDelegate(double[] x, double[] y);
 
         private delegate void seriesAppendDelegate(Series plot, double[] x, double[] y);
 		private void PlotXYAppend(Chart graph, Series plot, double[] x, double[] y)
@@ -782,11 +782,7 @@ namespace ScanMaster.GUI
             lock (this)
             {
                 plot.Points.Clear();
-                for (int i = 0; i < x.Length; i++)
-                {
-                    plot.Points.AddXY(x[i], y[i]);
-                }
-                plot.Sort(PointSortOrder.Ascending, "X");
+                seriesAppendHelper(plot, x, y);
             }
         }
         private void PlotXY(Chart figure, Series plot, double[] x, double[] y)
@@ -832,14 +828,6 @@ namespace ScanMaster.GUI
 		{
 			return graph.GetHighCursorValue();
 		}
-        public void InitializeCursors()
-        {
-            MoveLowCursor(tofCursorChart, tofCursorChart.chart.ChartAreas[0].AxisX.Minimum);
-            MoveHighCursor(tofCursorChart, tofCursorChart.chart.ChartAreas[0].AxisX.Maximum);
-            MoveLowCursor(pmtCursorChart, pmtCursorChart.chart.ChartAreas[0].AxisX.Minimum);
-            MoveHighCursor(pmtCursorChart, pmtCursorChart.chart.ChartAreas[0].AxisX.Maximum);
-        }
-        
 		public void SetLabel(Label label, string text)
 		{
 			label.Invoke(new SetLabelDelegate(SetLabelHelper), new object[] { label, text });

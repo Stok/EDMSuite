@@ -121,7 +121,7 @@ namespace ScanMaster.GUI
             window.SetSpectrumFitFunctionComboState(false);
 
             //initialize cursors
-            window.InitializeCursors();
+            //window.InitializeCursors();
 		}
 
 		public void AcquireStop()

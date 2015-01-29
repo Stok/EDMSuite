@@ -17,11 +17,12 @@ namespace ScanMaster.GUI
     public partial class TwoCursorChart : UserControl
     {
         public event EventHandler LowCursorValueChanged, HighCursorValueChanged;
-        private PlotParameters chartRange;
+        private PlotParameters xRange, yRange;
         
         public TwoCursorChart()
         {
             InitializeComponent();
+            yRange = new PlotParameters(0, 1); //set to avoid crashes that happen when plot range = 0
         }
 
         internal Series GetSeriesByName(string name)
@@ -87,7 +88,7 @@ namespace ScanMaster.GUI
         }
         private double getLowCursorValueHelper()
         {
-            double newValue =  (lowTrackBar.Value / (double)chartRange.PointsPerRange) * chartRange.Interval + chartRange.Minimum;;
+            double newValue =  (lowTrackBar.Value / (double)xRange.PointsPerRange) * xRange.GetInterval() + xRange.Minimum;;
             return newValue;
         }
         public double GetHighCursorValue()
@@ -96,16 +97,25 @@ namespace ScanMaster.GUI
         }
         private double getHighCursorValueHelper()
         {
-            return (highTrackBar.Value / (double)chartRange.PointsPerRange) * chartRange.Interval + chartRange.Minimum;
+            return (highTrackBar.Value / (double)xRange.PointsPerRange) * xRange.GetInterval() + xRange.Minimum;
         }
         #endregion
 
         private delegate void setChartRangeDelegate(PlotParameters x);
-        private void setChartRangeHelper(PlotParameters x)
+        private void setChartAxesAndGateHelper(PlotParameters x)
         {
-            chartRange = x;
+            setChartAxesHelper(x);
+            setChartGateHelper(x);
+        }
+        private void setChartAxesHelper(PlotParameters x)
+        {
+            xRange = x;
             chart.ChartAreas[0].AxisX.Minimum = x.Minimum;
             chart.ChartAreas[0].AxisX.Maximum = x.Maximum;
+            //this.recalculateYAxesScale();
+        }
+        private void setChartGateHelper(PlotParameters x)
+        {
             lowTrackBar.Minimum = 0;
             lowTrackBar.Maximum = x.PointsPerRange;
             lowTrackBar.Value = 0;
@@ -113,10 +123,124 @@ namespace ScanMaster.GUI
             highTrackBar.Maximum = x.PointsPerRange;
             highTrackBar.Value = highTrackBar.Maximum;
         }
-        public void SetChartRange(PlotParameters x)
+        public void SetChartAxesAndGate(PlotParameters x)
         {
-            chart.Invoke(new setChartRangeDelegate(setChartRangeHelper), new Object[] { x }); 
+            chart.Invoke(new setChartRangeDelegate(setChartAxesAndGateHelper), new Object[] { x }); 
+        }
+        public void SetChartAxes(PlotParameters x)
+        {
+            chart.Invoke(new setChartRangeDelegate(setChartAxesHelper), new Object[] { x });
+        }
+        public void SetChartGate(PlotParameters x)
+        {
+            chart.Invoke(new setChartRangeDelegate(setChartGateHelper), new Object[] { x });
         }
 
+        #region resetting axes (DOESN't WORK + NOT USED)
+        /*
+        public void ResetYAxesScale()
+        {
+            PlotParameters y = getExtremeYValueInPlot();
+            chart.ChartAreas[0].AxisY.Minimum = Math.Round(y.Minimum - y.GetInterval() / 50.0, 2);
+            chart.ChartAreas[0].AxisY.Maximum = Math.Round(y.Maximum + y.GetInterval() / 50.0, 2);
+            yRange = y;
+        }
+        private PlotParameters getExtremeYValueInPlot()
+        {
+            PlotParameters y = new PlotParameters(0,1);
+            for (int i = 0; i < 5; i++)
+            {
+                foreach (DataPoint p in chart.Series[i].Points)
+                {
+                    if (p.YValues[0] > y.Maximum)
+                    {
+                        y.Maximum = p.YValues[0];
+                    }
+                    if (p.YValues[0] < y.Minimum)
+                    {
+                        y.Minimum = p.YValues[0];
+                    }
+                }
+
+            }
+            return y;
+        }
+        */
+        #endregion
+
+        #region Plotting and clearing points
+
+        private delegate void ClearSeriesDelegate(Series s);
+        public void ClearSeries(Series s)
+        {
+            if (chart.IsHandleCreated)
+            {
+                chart.Invoke(new ClearSeriesDelegate(clearSeriesHelper), new Object[] { s });
+            }
+        }
+        private void clearSeriesHelper(Series s)
+        {
+            if (chart.IsHandleCreated)
+            {
+                s.Points.Clear();
+            }
+        }
+        
+        public void ClearChart()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                ClearSeries(chart.Series[i]);
+            }
+        }
+
+        private delegate void seriesAppendDelegate(Series s, double[] x, double[] y);
+        public void PlotXYAppend(Series s, double[] x, double[] y)
+        {
+            if (chart.IsHandleCreated)
+            {
+                chart.Invoke(new seriesAppendDelegate(seriesAppendHelper), new Object[] { s, x, y });
+            }
+        }
+        private void seriesAppendHelper(Series s, double[] x, double[] y)
+        {
+            lock (this)
+            {
+                /*if(chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+                {
+                    ResetYAxesScale();
+                }*/
+                for (int i = 0; i < x.Length; i++)
+                {
+                    s.Points.AddXY(x[i], y[i]);
+                }
+                s.Sort(PointSortOrder.Ascending, "X");
+            }
+        }
+
+        public void PlotXY(Series plot, double[] x, double[] y)
+        {
+            this.ClearSeries(plot);
+            this.PlotXYAppend(plot, x, y);
+        }
+
+        private delegate void PlotYDelegate(Series s, double start, double inc, double[] yData);
+        public void PlotY(Series p, double start, double inc, double[] ydata)
+        {
+            chart.Invoke(new PlotYDelegate(plotYHelper), new Object[] { p, start, inc, ydata });
+        }
+        private void plotYHelper(Series series, double start, double inc, double[] ydata)
+        {
+            double[] xValues = new double[ydata.Length];
+            for (int i = 0; i < xValues.Length; i++)
+            {
+                xValues[i] = start + inc * i;
+            }
+            chart.ChartAreas[0].AxisX.Minimum = start;
+            chart.ChartAreas[0].AxisX.Maximum = xValues[xValues.Length - 1];
+            PlotXY(series, xValues, ydata);
+        }
+
+        #endregion
     }
 }
