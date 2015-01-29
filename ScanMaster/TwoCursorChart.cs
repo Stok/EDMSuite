@@ -136,8 +136,8 @@ namespace ScanMaster.GUI
             chart.Invoke(new setChartRangeDelegate(setChartGateHelper), new Object[] { x });
         }
 
-        #region resetting axes (DOESN't WORK + NOT USED)
-        /*
+        #region resetting axes
+        
         public void ResetYAxesScale()
         {
             PlotParameters y = getExtremeYValueInPlot();
@@ -147,25 +147,27 @@ namespace ScanMaster.GUI
         }
         private PlotParameters getExtremeYValueInPlot()
         {
-            PlotParameters y = new PlotParameters(0,1);
+            double? maxOfSeries, minOfSeries, maxOfChart = null, minOfChart = null;          
             for (int i = 0; i < 5; i++)
             {
-                foreach (DataPoint p in chart.Series[i].Points)
+                if (chart.Series[i].Points.Count > 1)
                 {
-                    if (p.YValues[0] > y.Maximum)
-                    {
-                        y.Maximum = p.YValues[0];
-                    }
-                    if (p.YValues[0] < y.Minimum)
-                    {
-                        y.Minimum = p.YValues[0];
-                    }
+                    maxOfSeries = chart.Series[i].Points.FindMaxByValue("Y1").YValues[0];
+                    minOfSeries = chart.Series[i].Points.FindMinByValue("Y1").YValues[0];
                 }
-
+                else { maxOfSeries = null; minOfSeries = null; }
+                if (maxOfSeries > maxOfChart || maxOfChart == null)
+                {
+                    maxOfChart = maxOfSeries;
+                }
+                if (minOfSeries < minOfChart || minOfChart == null)
+                {
+                    minOfChart = minOfSeries;
+                }
             }
-            return y;
+            return new PlotParameters((double)minOfChart, (double)maxOfChart);
         }
-        */
+        
         #endregion
 
         #region Plotting and clearing points
@@ -180,6 +182,10 @@ namespace ScanMaster.GUI
         }
         private void clearSeriesHelper(Series s)
         {
+            if (this.GetSeriesByName(s.Name).Points.Count > 1) //Prevent plot range = 0 bugs
+            {
+                ResetYAxesScale();
+            }
             if (chart.IsHandleCreated)
             {
                 s.Points.Clear();
@@ -188,6 +194,10 @@ namespace ScanMaster.GUI
         
         public void ClearChart()
         {
+            if (chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+            {
+                ResetYAxesScale();
+            }
             for (int i = 0; i < 5; i++)
             {
                 ClearSeries(chart.Series[i]);
@@ -206,10 +216,10 @@ namespace ScanMaster.GUI
         {
             lock (this)
             {
-                /*if(chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+                if(chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
                 {
                     ResetYAxesScale();
-                }*/
+                }
                 for (int i = 0; i < x.Length; i++)
                 {
                     s.Points.AddXY(x[i], y[i]);
@@ -239,6 +249,10 @@ namespace ScanMaster.GUI
             chart.ChartAreas[0].AxisX.Minimum = start;
             chart.ChartAreas[0].AxisX.Maximum = xValues[xValues.Length - 1];
             PlotXY(series, xValues, ydata);
+            if (chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+            {
+                ResetYAxesScale();
+            }
         }
 
         #endregion
