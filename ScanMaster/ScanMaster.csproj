@@ -121,10 +121,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TransferCavityLock2012\TransferCavityLock2012.csproj">
-      <Project>{f1bf43a3-5641-4adf-81cb-35bc0d9ac423}</Project>
-      <Name>TransferCavityLock2012</Name>
-    </ProjectReference>
     <Reference Include="alglibnet2">
       <HintPath>.\alglibnet2.dll</HintPath>
     </Reference>

@@ -5,7 +5,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 
-namespace SympatheticHardwareControl
+namespace ParityHardwareControl
 {
     static class Runner
     {
@@ -19,7 +19,7 @@ namespace SympatheticHardwareControl
             Controller controller = new Controller();
 
             // publish the controller to the remoting system
-            TcpChannel channel = new TcpChannel(1172);
+            TcpChannel channel = new TcpChannel(1178);
             ChannelServices.RegisterChannel(channel, false);
             RemotingServices.Marshal(controller, "controller.rem");
 

@@ -151,6 +151,7 @@
     <Compile Include="SympatheticHardware.cs" />
     <Compile Include="Synth.cs" />
     <Compile Include="TransferCavity2012Lockable.cs" />
+    <Compile Include="TransferCavity2012Operatable.cs" />
     <Compile Include="TransferCavityLock2012LaserControllable.cs" />
     <Compile Include="TransferCavityLockable.cs" />
     <Compile Include="TranslationStageControllable.cs" />

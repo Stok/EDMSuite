@@ -18,7 +18,7 @@ using DAQ.Environment;
 
 
 
-namespace SympatheticHardwareControl
+namespace ParityHardwareControl
 {
     /// <summary>
     /// This is the interface to the sympathetic specific hardware.

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScanMaster.Acquire.Plugin;
-using TransferCavityLock2012;
+//using TransferCavityLock2012;
 using System.Xml.Serialization;
 using DAQ.Environment;
 using System.Threading;
 using System.Runtime.Remoting;
+using DAQ.TransferCavityLock2012;
 
 namespace ScanMaster.Acquire.Plugins
 {
@@ -18,7 +19,8 @@ namespace ScanMaster.Acquire.Plugins
         [NonSerialized]
         private double scanParameter = 0;
         [NonSerialized]
-        private TransferCavityLock2012.Controller tclController;
+        //private TransferCavityLock2012.Controller tclController;
+        private TransferCavity2012Operatable tclController;
 
         protected override void InitialiseSettings()
         {
@@ -29,7 +31,9 @@ namespace ScanMaster.Acquire.Plugins
         public override void AcquisitionStarting()
         {
             // connect the TCL controller over remoting network connection
-            tclController = new TransferCavityLock2012.Controller();
+           // tclController = new TransferCavityLock2012.Controller();
+            tclController = (TransferCavity2012Operatable)Activator.GetObject(typeof(TransferCavity2012Operatable),
+                "tcp://localhost:1190/controller.rem");
             scanParameter = 0;
 
             setV((double)settings["start"], 200);
