@@ -18,12 +18,12 @@ namespace DAQ.HAL
 
         public D006MMTFZ400Hardware()
 		{
-            Boards.Add("testBoard1", "/dev1");
-            string TCLBoard = (string)Boards["testBoard1"];
-            Boards.Add("testBoard2", "/dev2");
-            string TCLBoard2 = (string)Boards["testBoard2"];
+            //Boards.Add("testBoard1", "/dev1");
+            //string TCLBoard = (string)Boards["testBoard1"];
+            //Boards.Add("testBoard2", "/dev2");
+            //string TCLBoard2 = (string)Boards["testBoard2"];
 
-            Info.Add("analogTrigger2", TCLBoard + "/PFI0"); 
+            //Info.Add("analogTrigger2", TCLBoard + "/PFI0"); 
             //TCL Lockable lasers
             Info.Add("TCLLockableLasers", new string[] { "laser" });
             Info.Add("TCLPhotodiodes", new string[] { "cavity", "master", "p1" });// THE FIRST TWO MUST BE CAVITY AND MASTER PHOTODIODE!!!!
@@ -39,14 +39,14 @@ namespace DAQ.HAL
             Info.Add("laser", "p1");
             Info.Add("laser2", "p2");
 
-            AddAnalogInputChannel("p1", TCLBoard + "/ai0", AITerminalConfiguration.Rse);//Pin 2
-            AddAnalogInputChannel("p2", TCLBoard + "/ai1", AITerminalConfiguration.Rse);//Pin 5
-            AddAnalogInputChannel("cavity", TCLBoard + "/ai2", AITerminalConfiguration.Rse); //Pin 8
-            AddAnalogInputChannel("master", TCLBoard + "/ai3", AITerminalConfiguration.Rse); //Pin 8
+           // AddAnalogInputChannel("p1", TCLBoard + "/ai0", AITerminalConfiguration.Rse);//Pin 2
+            //AddAnalogInputChannel("p2", TCLBoard + "/ai1", AITerminalConfiguration.Rse);//Pin 5
+            //AddAnalogInputChannel("cavity", TCLBoard + "/ai2", AITerminalConfiguration.Rse); //Pin 8
+            //AddAnalogInputChannel("master", TCLBoard + "/ai3", AITerminalConfiguration.Rse); //Pin 8
 
             //map the analog output channels
-            AddAnalogOutputChannel("laser", TCLBoard2 + "/ao0",0,5); // Pin 22
-            AddAnalogOutputChannel("rampfb", TCLBoard2 + "/ao1",0,5); 
+           // AddAnalogOutputChannel("laser", TCLBoard2 + "/ao0",0,5); // Pin 22
+            //AddAnalogOutputChannel("rampfb", TCLBoard2 + "/ao1",0,5); 
             //AddAnalogOutputChannel("cavity", TCLBoard2 + "/ao1"); // Pin 21
 		}
 

@@ -19,7 +19,7 @@ namespace ParityHardwareControl
             Controller controller = new Controller();
 
             // publish the controller to the remoting system
-            TcpChannel channel = new TcpChannel(1178);
+            TcpChannel channel = new TcpChannel(1172);
             ChannelServices.RegisterChannel(channel, false);
             RemotingServices.Marshal(controller, "controller.rem");
 

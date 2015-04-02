@@ -15,7 +15,7 @@ namespace ScanMaster.Acquire.Plugin
 	[Serializable]
 	[XmlInclude(typeof(AnalogShotGathererPlugin)), XmlInclude(typeof(NullShotGathererPlugin)), 
 	XmlInclude(typeof(ModulatedAnalogShotGathererPlugin)), XmlInclude(typeof(BufferedEventCountingShotGathererPlugin)),
-    XmlInclude(typeof(ImageGrabbingAnalogShotGathererPlugin))]
+    XmlInclude(typeof(ImageGrabbingAnalogShotGathererPlugin)), XmlInclude(typeof(NIScopeShotGathererPlugin))]
 	public abstract class ShotGathererPlugin : AcquisitorPlugin
 	{
 		protected override void InitialiseBaseSettings()

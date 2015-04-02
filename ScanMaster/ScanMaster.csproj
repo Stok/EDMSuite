@@ -214,6 +214,9 @@
     <Compile Include="BasicBeamPatternPlugin.cs" />
     <Compile Include="ImagingPatternBuilder.cs" />
     <Compile Include="ImagingPatternPlugin.cs" />
+    <Compile Include="NIScopeShotGathererPlugin.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
