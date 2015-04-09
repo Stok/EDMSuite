@@ -49,9 +49,12 @@ namespace ScanMaster.Acquire.Plugin
             settings["channelName"] = "0";
             settings["sampleRate"] = 100000000;
             settings["referencePosition"] = 50.0;
-            settings["range"] = 10.0;
+            settings["inputRangePlusMinus"] = 10.0;
             settings["numberOfPoints"] = 100;
             settings["numberOfRecords"] = 1;
+            settings["inputRangeLow"] = 0.0;
+            settings["inputRangeHigh"] = 0.0;
+            
         }
 
         public override void AcquisitionStarting()
@@ -60,7 +63,7 @@ namespace ScanMaster.Acquire.Plugin
 "tcp://localhost:1172/controller.rem");
 
             scope.StartAcquisition((string)settings["channelName"], Convert.ToDouble((int)settings["sampleRate"] / (int)settings["clockPeriod"]), 
-                (double)settings["referencePosition"], (double)settings["range"], 
+                (double)settings["referencePosition"], (double)settings["inputRangePlusMinus"], 
                 (int)settings["gateLength"], (int)settings["numberOfRecords"]);
         }
 
