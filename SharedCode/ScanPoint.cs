@@ -48,6 +48,15 @@ namespace Data.Scans
 			return Integrate(offShots, index, startTime, endTime);
 		}
 
+        public double AbsIntegrateOn(int index, double startTime, double endTime)
+        {
+            return AbsValIntegrate(onShots, index, startTime, endTime);
+        }
+
+        public double AbsIntegrateOff(int index, double startTime, double endTime)
+        {
+            return AbsValIntegrate(offShots, index, startTime, endTime);
+        }
         public double VarianceOn(int index, double startTime, double endTime)
         {
             return Variance(onShots, index, startTime, endTime);
@@ -69,6 +78,13 @@ namespace Data.Scans
 			foreach (Shot s in shots) temp += s.Integrate(index, startTime, endTime);
 			return temp/shots.Count;
 		}
+
+        private double AbsValIntegrate(ArrayList shots, int index, double startTime, double endTime)
+        {
+            double temp = 0;
+            foreach (Shot s in shots) temp += s.AbsValIntegrate(index, startTime, endTime);
+            return temp / shots.Count;
+        }
 
         private double IntegrateNormed(ArrayList shots, int[] index, double startTime0, double endTime0, double startTime1, double endTime1)
         {
