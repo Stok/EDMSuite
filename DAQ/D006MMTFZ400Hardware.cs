@@ -18,26 +18,37 @@ namespace DAQ.HAL
 
         public D006MMTFZ400Hardware()
 		{
-            //Boards.Add("testBoard1", "/dev1");
-            //string TCLBoard = (string)Boards["testBoard1"];
+            Boards.Add("pgBoard", "/PXI1Slot2");
+            string pgBoard = (string)Boards["pgBoard"];
+            Info.Add("PatternGeneratorBoard", pgBoard);
+            Info.Add("PGType", "dedicated");
             //Boards.Add("testBoard2", "/dev2");
             //string TCLBoard2 = (string)Boards["testBoard2"];
 
+            //PG channels
+            AddDigitalOutputChannel("q", pgBoard, 0, 0); //t = 0;
+            AddDigitalOutputChannel("valve", pgBoard, 0, 1); //Use this for the microwaves as it has the valvePulseLength feature!
+            AddDigitalOutputChannel("flash", pgBoard, 0, 2); //Basically unused
+            AddDigitalOutputChannel("detector", pgBoard, 0, 3);
+            AddDigitalOutputChannel("detectorprime", pgBoard, 0, 4);
+            AddDigitalOutputChannel("aom", pgBoard, 0, 5);
+
+
             //Info.Add("analogTrigger2", TCLBoard + "/PFI0"); 
             //TCL Lockable lasers
-            Info.Add("TCLLockableLasers", new string[] { "laser" });
-            Info.Add("TCLPhotodiodes", new string[] { "cavity", "master", "p1" });// THE FIRST TWO MUST BE CAVITY AND MASTER PHOTODIODE!!!!
-            Info.Add("TCL_Slave_Voltage_Limit_Upper",5.0); //volts: Laser control
-            Info.Add("TCL_Slave_Voltage_Limit_Lower", 0.0); //volts: Laser control
-            Info.Add("TCL_Default_Gain", 0.5);
-            Info.Add("TCL_Default_VoltageToLaser", 0.0);
-            Info.Add("TCL_MAX_INPUT_VOLTAGE", 10.0);
-            Info.Add("TCL_Default_ScanPoints", 100);
-            Info.Add("TCLReadAutostart", true);
+            //Info.Add("TCLLockableLasers", new string[] { "laser" });
+            //Info.Add("TCLPhotodiodes", new string[] { "cavity", "master", "p1" });// THE FIRST TWO MUST BE CAVITY AND MASTER PHOTODIODE!!!!
+            //Info.Add("TCL_Slave_Voltage_Limit_Upper",5.0); //volts: Laser control
+            //Info.Add("TCL_Slave_Voltage_Limit_Lower", 0.0); //volts: Laser control
+            //Info.Add("TCL_Default_Gain", 0.5);
+            //Info.Add("TCL_Default_VoltageToLaser", 0.0);
+            //Info.Add("TCL_MAX_INPUT_VOLTAGE", 10.0);
+            //Info.Add("TCL_Default_ScanPoints", 100);
+            //Info.Add("TCLReadAutostart", true);
 
             // Some matching up for TCL
-            Info.Add("laser", "p1");
-            Info.Add("laser2", "p2");
+            //Info.Add("laser", "p1");
+            //Info.Add("laser2", "p2");
 
            // AddAnalogInputChannel("p1", TCLBoard + "/ai0", AITerminalConfiguration.Rse);//Pin 2
             //AddAnalogInputChannel("p2", TCLBoard + "/ai1", AITerminalConfiguration.Rse);//Pin 5
