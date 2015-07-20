@@ -88,7 +88,7 @@ namespace ScanMaster.GUI
         }
         private double getLowCursorValueHelper()
         {
-            double newValue =  (lowTrackBar.Value / (double)xRange.PointsPerRange) * xRange.GetInterval() + xRange.Minimum;;
+            double newValue =  (lowTrackBar.Value / (double)xRange.PointsPerRange) * xRange.GetInterval() + xRange.Minimum;
             return newValue;
         }
         public double GetHighCursorValue()
@@ -112,7 +112,6 @@ namespace ScanMaster.GUI
             xRange = x;
             chart.ChartAreas[0].AxisX.Minimum = x.Minimum;
             chart.ChartAreas[0].AxisX.Maximum = x.Maximum;
-            //this.recalculateYAxesScale();
         }
         private void setChartGateHelper(PlotParameters x)
         {
@@ -182,10 +181,6 @@ namespace ScanMaster.GUI
         }
         private void clearSeriesHelper(Series s)
         {
-            if (this.GetSeriesByName(s.Name).Points.Count > 1) //Prevent plot range = 0 bugs
-            {
-                ResetYAxesScale();
-            }
             if (chart.IsHandleCreated)
             {
                 s.Points.Clear();
@@ -194,10 +189,6 @@ namespace ScanMaster.GUI
         
         public void ClearChart()
         {
-            if (chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
-            {
-                ResetYAxesScale();
-            }
             for (int i = 0; i < 5; i++)
             {
                 ClearSeries(chart.Series[i]);
