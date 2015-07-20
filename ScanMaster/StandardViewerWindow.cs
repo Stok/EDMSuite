@@ -741,7 +741,6 @@ namespace ScanMaster.GUI
 		}
 		public void AppendToPMTOn(double[] x, double[] y)
 		{
-            Series a = pmtCursorChart.GetSeriesByName("onPlot");
             pmtCursorChart.PlotXYAppend(pmtCursorChart.GetSeriesByName("onPlot"), x, y);
 		}
 		public void AppendToPMTOff(double[] x, double[] y)
@@ -844,7 +843,7 @@ namespace ScanMaster.GUI
                 plot.Sort(PointSortOrder.Ascending, "X");
             }
         }
-
+        
         private delegate void plotSeriesDelegate(Series plot,
           double[] x, double[] y);
         private void plotSeriesHelper(Series plot,
@@ -860,7 +859,7 @@ namespace ScanMaster.GUI
         {
             figure.Invoke(new plotSeriesDelegate(plotSeriesHelper), new object[] { plot, x, y });
         }
-
+        
 
 
 
