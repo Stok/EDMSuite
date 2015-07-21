@@ -66,6 +66,8 @@ namespace ParityHardwareControl
                 scopeSession = new NIScope(scopeName, false, true);
                 scopeSession.DriverOperation.Warning += new EventHandler<ScopeWarningEventArgs>(DriverOperation_Warning);
 
+                scopeSession.Channels[channelName].InputImpedance = 50;
+
                 double offset = 0.0;
                 ScopeVerticalCoupling coupling = ScopeVerticalCoupling.DC;
                 double probeAttenuation = 1.0;
