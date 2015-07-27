@@ -56,6 +56,8 @@ namespace ParityHardwareControl
                 scopeSession = new NIScope(scopeName, false, true);
                 scopeSession.DriverOperation.Warning += new EventHandler<ScopeWarningEventArgs>(DriverOperation_Warning);
 
+                scopeSession.Channels[channelName].InputImpedance = 50;
+
                 double offset = 0.0;
                 ScopeVerticalCoupling coupling = ScopeVerticalCoupling.DC;
                 double probeAttenuation = 1.0;
@@ -68,7 +70,7 @@ namespace ParityHardwareControl
                 scopeSession.Timing.ConfigureTiming
                     (sampleRate, numberOfPoints, referencePosition, numberOfRecords, enforceRealtime);
 
-                double triggerLevel = 0.0;
+                double triggerLevel = 1.6;
                 ScopeTriggerSlope triggerSlope = ScopeTriggerSlope.Positive;
                 ScopeTriggerCoupling triggerCoupling = ScopeTriggerCoupling.DC;
                 PrecisionTimeSpan triggerHoldoff = PrecisionTimeSpan.Zero;

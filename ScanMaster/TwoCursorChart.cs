@@ -137,7 +137,7 @@ namespace ScanMaster.GUI
 
         #region resetting axes
         
-        public void ResetYAxesScale()
+        /*public void ResetYAxesScale()
         {
             PlotParameters y = getExtremeYValueInPlot();
             chart.ChartAreas[0].AxisY.Minimum = Math.Round(y.Minimum - y.GetInterval() / 50.0, 2);
@@ -166,7 +166,7 @@ namespace ScanMaster.GUI
             }
             return new PlotParameters((double)minOfChart, (double)maxOfChart);
         }
-        
+        */
         #endregion
 
         #region Plotting and clearing points
@@ -207,10 +207,10 @@ namespace ScanMaster.GUI
         {
             lock (this)
             {
-                if(chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+                /*if(chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
                 {
                     ResetYAxesScale();
-                }
+                }*/
                 for (int i = 0; i < x.Length; i++)
                 {
                     s.Points.AddXY(x[i], y[i]);
@@ -237,13 +237,12 @@ namespace ScanMaster.GUI
             {
                 xValues[i] = start + inc * i;
             }
-            chart.ChartAreas[0].AxisX.Minimum = start;
-            chart.ChartAreas[0].AxisX.Maximum = xValues[xValues.Length - 1];
-            PlotXY(series, xValues, ydata);
-            if (chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+            /*lock (this)
             {
-                ResetYAxesScale();
-            }
+                chart.ChartAreas[0].AxisX.Minimum = start;
+                chart.ChartAreas[0].AxisX.Maximum = xValues[xValues.Length - 1];
+            }*/
+                PlotXY(series, xValues, ydata);
         }
 
         #endregion
