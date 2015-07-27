@@ -22,12 +22,16 @@ namespace DAQ.HAL
             string pgBoard = (string)Boards["pgBoard"];
             Info.Add("PatternGeneratorBoard", pgBoard);
             Info.Add("PGType", "dedicated");
+
+            Info.Add("PGClockLine", pgBoard + "/PFI4");
+
+
             //Boards.Add("testBoard2", "/dev2");
             //string TCLBoard2 = (string)Boards["testBoard2"];
 
             //PG channels
-            AddDigitalOutputChannel("q", pgBoard, 0, 0); //t = 0;
-            AddDigitalOutputChannel("valve", pgBoard, 0, 1); //Use this for the microwaves as it has the valvePulseLength feature!
+            AddDigitalOutputChannel("q", pgBoard, 0, 1); //t = 0;
+            AddDigitalOutputChannel("valve", pgBoard, 0, 0); //Use this for the microwaves as it has the valvePulseLength feature!
             AddDigitalOutputChannel("flash", pgBoard, 0, 2); //Basically unused
             AddDigitalOutputChannel("detector", pgBoard, 0, 3);
             AddDigitalOutputChannel("detectorprime", pgBoard, 0, 4);

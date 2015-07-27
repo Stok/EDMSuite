@@ -16,10 +16,8 @@ namespace ParityHardwareControl
     public class NIScopeControlHelper : NIScopeControllable
     {
         NIScope scopeSession;
-        double[,] shot;
+        double[] shot;
         long recordLength;
-        double sampleRate, referencePosition, range;
-        int numberOfPoints, numberOfRecords;
         PrecisionTimeSpan timeout;
         AnalogWaveformCollection<double> waveforms;
         ModularInstrumentsSystem scopeDevices;
@@ -31,18 +29,10 @@ namespace ParityHardwareControl
         {
             MessageBox.Show(e.Text, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        public double[,] GetShot()
+        public double[] GetShot()
         {
-            double[] data = waveforms[0].GetRawData();
-            shot = new double[data.Length,2];
-            for (int i = 0; i < data.Length; i++)
-            {
-                shot[i, 0] = i;//* timeInterval + startTime;
-                shot[i, 1] = data[i];
-            }
-            return shot;
+            return waveforms[0].GetRawData();
         }
-
         public void ArmAndWait()
         {
             try
@@ -80,7 +70,7 @@ namespace ParityHardwareControl
                 scopeSession.Timing.ConfigureTiming
                     (sampleRate, numberOfPoints, referencePosition, numberOfRecords, enforceRealtime);
 
-                double triggerLevel = 0.0;
+                double triggerLevel = 1.6;
                 ScopeTriggerSlope triggerSlope = ScopeTriggerSlope.Positive;
                 ScopeTriggerCoupling triggerCoupling = ScopeTriggerCoupling.DC;
                 PrecisionTimeSpan triggerHoldoff = PrecisionTimeSpan.Zero;
@@ -114,11 +104,13 @@ namespace ParityHardwareControl
 
         public void StartScan()
         {
+
             //throw new NotImplementedException();
         }
 
         public void FinishScan()
         {
+
             //throw new NotImplementedException();
         }
 

@@ -26,6 +26,11 @@ namespace Data
 			return ((TOF)tofs[index]).Integrate(startTime, endTime);
 		}
 
+        public double AbsValIntegrate(int index, double startTime, double endTime)
+        {
+            return ((TOF)tofs[index]).AbsValIntegrate(startTime, endTime);
+        }
+
         public double Mean(int index)
         {
             return ((TOF)tofs[index]).Mean;

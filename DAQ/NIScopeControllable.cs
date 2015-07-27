@@ -7,7 +7,7 @@ namespace DAQ.NIScope
 {
     public interface NIScopeControllable
     {
-        double[,] GetShot();
+        double[] GetShot();
         void ArmAndWait();
         void StartAcquisition(string channelName, double sampleRate, double referencePosition,
             double range, int numberOfPoints, int numberOfRecords);

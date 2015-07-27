@@ -79,6 +79,36 @@ namespace Data
             return sum;
         }
 
+        //Copy pasted what's above, and added Math.Abs everywhere.
+        public double AbsValIntegrate(double startTime, double endTime)
+        {
+            double[] trimmedGates = TrimGates(startTime, endTime);
+            if (trimmedGates == null) return 0;
+            startTime = trimmedGates[0];
+            endTime = trimmedGates[1];
+
+            return IntegrateAbsValInternal(startTime, endTime);
+        }
+        private double IntegrateAbsValInternal(double startTime, double endTime)
+        {
+            // calculate the the points that are included in the range, plus the point above and below
+            double p = (startTime - (double)gateStartTime) / (double)clockPeriod;
+            double q = (endTime - (double)gateStartTime) / (double)clockPeriod;
+            int lowest = (int)Math.Floor(p);
+            int highest = (int)Math.Ceiling(q);
+
+            // sum over all trapeziums included in the gate range, even those partially included
+            double sum = 0.0;
+            for (int i = lowest; i < highest; i++) sum += ((double)clockPeriod * 0.5) * (Math.Abs(tofData[i]) + Math.Abs(tofData[i + 1]));
+
+            // correct the first and last trapeziums which may not be fully included
+            sum -= ((2 * Math.Abs(tofData[lowest])) + (Math.Abs(tofData[lowest + 1]) - Math.Abs(tofData[lowest]))
+                            * (p - Math.Floor(p))) * ((double)clockPeriod * 0.5 * (p - Math.Floor(p)));
+            sum -= ((2 * Math.Abs(tofData[highest])) - (Math.Abs(tofData[highest]) - Math.Abs(tofData[highest - 1]))
+                            * (Math.Ceiling(q) - q)) * ((double)clockPeriod * 0.5 * (Math.Ceiling(q) - q));
+
+            return sum;
+        }
         // this is the old integrate method that did no interpolation.
         //public double IntegrateOld(double startTime, double endTime)
         //{

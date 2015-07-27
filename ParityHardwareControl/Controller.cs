@@ -277,7 +277,7 @@ namespace ParityHardwareControl
 
         #region The Fast NIScope card
 
-        public double[,] GetShot()
+        public double[] GetShot()
         {
             return scope.GetShot();
         }
@@ -291,8 +291,7 @@ namespace ParityHardwareControl
             double range, int numberOfPoints, int numberOfRecords)
         {
             System.Console.Out.Write("Initialising NI-Scope card and starting acquisition...");
-            scope.StartAcquisition(channelName, sampleRate, referencePosition,
-            range, numberOfPoints, numberOfRecords);
+            scope.StartAcquisition(channelName, sampleRate, referencePosition, range, numberOfPoints, numberOfRecords);
             System.Console.Out.Write("complete.\n");
         }
 
@@ -310,6 +309,7 @@ namespace ParityHardwareControl
         {
             System.Console.Out.Write("Finishing acquisition on NI-Scope card.");
             scope.FinishAcquisition();
+            System.Console.Out.Write("complete.\n");
         }
 
         #endregion
