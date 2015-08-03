@@ -31,7 +31,7 @@ namespace DAQ.HAL
 
             //PG channels
             AddDigitalOutputChannel("q", pgBoard, 0, 1); //t = 0;
-            AddDigitalOutputChannel("valve", pgBoard, 0, 0); //Use this for the microwaves as it has the valvePulseLength feature!
+            AddDigitalOutputChannel("valve", pgBoard, 0, 6); //Use this for the microwaves as it has the valvePulseLength feature!
             AddDigitalOutputChannel("flash", pgBoard, 0, 2); //Basically unused
             AddDigitalOutputChannel("detector", pgBoard, 0, 3);
             AddDigitalOutputChannel("detectorprime", pgBoard, 0, 4);

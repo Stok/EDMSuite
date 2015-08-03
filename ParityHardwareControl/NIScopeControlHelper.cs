@@ -16,13 +16,12 @@ namespace ParityHardwareControl
     public class NIScopeControlHelper : NIScopeControllable
     {
         NIScope scopeSession;
-        double[] shot;
         long recordLength;
         PrecisionTimeSpan timeout;
         AnalogWaveformCollection<double> waveforms;
         ModularInstrumentsSystem scopeDevices;
         string scopeName, channelName;
-
+        ScopeWaveformInfo[] waveformInfo;
 
        
         void DriverOperation_Warning(object sender, ScopeWarningEventArgs e)
@@ -31,17 +30,39 @@ namespace ParityHardwareControl
         }
         public double[] GetShot()
         {
-            return waveforms[0].GetRawData();
+            int numberOfWaveforms = waveforms.Count();
+            double[] data = waveforms[0].GetRawData();
+            double[] tempData = waveforms[0].GetRawData();
+            for (int i = 1; i < numberOfWaveforms; i++ )
+            {
+                tempData = waveforms[i].GetRawData();
+                for(int j = 0; j < data.Length; j++)
+                {
+                    data[j] += tempData[j]; 
+                }
+            }
+            for (int j = 0; j < data.Length; j++)
+            {
+                data[j] = data[j] / numberOfWaveforms;
+            }
+                //return waveforms[0].GetRawData();
+            return data;
         }
         public void ArmAndWait()
         {
-            try
+            lock (this)
             {
-                waveforms = scopeSession.Channels[channelName].Measurement.Read(timeout, recordLength, waveforms);
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex);
+                try
+                {
+                    
+                    //waveforms = scopeSession.Channels[channelName].Measurement.Read(timeout, recordLength, waveforms);
+                    waveforms = scopeSession.Channels[channelName].Measurement.FetchDouble(timeout, recordLength, waveforms, out waveformInfo);
+                    scopeSession.Measurement.Initiate();
+                }
+                catch (Exception ex)
+                {
+                    ShowError(ex);
+                }
             }
             
         }
@@ -63,7 +84,7 @@ namespace ParityHardwareControl
                 double probeAttenuation = 1.0;
                 scopeSession.Channels[channelName].Configure(range, offset, coupling, probeAttenuation, true);
 
-
+//                scopeSession.Channels[channelName]
 
                 bool enforceRealtime = true;
 

@@ -682,7 +682,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                pmtCursorChart.SetChartAxes(value);
+                pmtCursorChart.InitializeTwoCursorChart(value, false);
 				SetGraphXAxisRange(differenceGraph, value);
 				SetGraphXAxisRange(analog1Graph, value);
 				SetGraphXAxisRange(analog2Graph, value);
@@ -693,7 +693,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                pmtCursorChart.SetChartAxesAndGate(value);
+                pmtCursorChart.InitializeTwoCursorChart(value, false);
 				MoveLowCursor(pmtCursorChart, value.Minimum);
 				MoveHighCursor(pmtCursorChart, value.Maximum);
 			}
@@ -709,7 +709,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                tofCursorChart.SetChartAxesAndGate(value);
+                tofCursorChart.InitializeTwoCursorChart(value, true);
 			}
 			get
 			{
