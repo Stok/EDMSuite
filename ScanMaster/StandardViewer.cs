@@ -21,6 +21,9 @@ namespace ScanMaster.GUI
 		// viewer support
 		private StandardViewerWindow window;
 		private bool visible;
+        
+        //just for displaying the number of scans
+        private int numberOfScansSoFar = 0;
 
 		// stuff used for displaying the scans
 		Scan pointsToPlot = new Scan();
@@ -46,6 +49,10 @@ namespace ScanMaster.GUI
         double OverShotNoise1;
         double OverShotNoise01;
 
+
+        //FFT window
+        FFTViewer fftviewer;
+        bool fftviewerIsOpen = false;
         // spectrum display mode
 
         enum ScanDisplayMode { Integral, IofAbs};
@@ -98,6 +105,8 @@ namespace ScanMaster.GUI
 
 		public void AcquireStart()
 		{
+            numberOfScansSoFar = 0;
+
 			// clear the stored data
 			pointsToPlot.Points.Clear();
 			// grab the latest settings
@@ -316,6 +325,10 @@ namespace ScanMaster.GUI
 			// clear the realtime spectra
 			pointsToPlot.Points.Clear();
 			window.ClearRealtimeSpectra();
+            numberOfScansSoFar++;
+            window.UpdateNumberOfScansSoFar(numberOfScansSoFar);
+
+
 		}
 
 		private void FitAverageTOF()
@@ -487,6 +500,11 @@ namespace ScanMaster.GUI
 				window.PlotAverageOffTOF(
 					(TOF)averageScan.GetGatedAverageOffShot(startSpectrumGate, endSpectrumGate).TOFs[0]);
 			}
+            if(fftviewerIsOpen)
+            {
+                fftviewer.PlotFFT(tof.Data,
+                   (int)p.AcquisitorConfig.shotGathererPlugin.Settings["gateLength"], (int)p.AcquisitorConfig.shotGathererPlugin.Settings["sampleRate"]);
+            }
 		}
 
 		private void UpdatePMTAveragePlots()
@@ -617,6 +635,19 @@ namespace ScanMaster.GUI
             window.TOFGate = new PlotParameters(defaultGate[0] - defaultGate[1],defaultGate[0] + defaultGate[1]);
             TOFCursorMoved();
             }
+        }
+
+
+        internal void StartFFTViewer()
+        {
+            fftviewer = new FFTViewer();
+            fftviewerIsOpen = true;
+        }
+
+        internal void StopFFTViewer()
+        {
+            fftviewer.Close();
+            fftviewerIsOpen = false;
         }
 	}
 }

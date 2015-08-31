@@ -54,6 +54,11 @@ namespace ScanMaster.GUI
         private ToolStripMenuItem tOFToolStripMenuItem;
         private ToolStripMenuItem integralToolStripMenuItem;
         private ToolStripMenuItem integralOfAbsValToolStripMenuItem;
+        private TextBox numberOfScansTextBox;
+        private Label label4;
+        private ToolStripMenuItem windowToolStripMenuItem;
+        private ToolStripMenuItem showFFTToolStripMenuItem;
+        private ToolStripMenuItem hideFFTToolStripMenuItem;
         private Chart analog1Graph;
 
 		public StandardViewerWindow(StandardViewer viewer)
@@ -113,9 +118,13 @@ namespace ScanMaster.GUI
             this.analog2Graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.differenceGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tofCursorChart = new ScanMaster.GUI.TwoCursorChart();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numberOfScansTextBox = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.pmtCursorChart = new ScanMaster.GUI.TwoCursorChart();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,8 +133,9 @@ namespace ScanMaster.GUI
             this.integralOfAbsValToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getTofOnOffIntegralArrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tOFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pmtCursorChart = new ScanMaster.GUI.TwoCursorChart();
-            this.tofCursorChart = new ScanMaster.GUI.TwoCursorChart();
+            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFFTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideFFTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -418,6 +428,16 @@ namespace ScanMaster.GUI
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TOF";
             // 
+            // tofCursorChart
+            // 
+            this.tofCursorChart.AutoSize = true;
+            this.tofCursorChart.Location = new System.Drawing.Point(3, 13);
+            this.tofCursorChart.Name = "tofCursorChart";
+            this.tofCursorChart.Size = new System.Drawing.Size(388, 438);
+            this.tofCursorChart.TabIndex = 62;
+            this.tofCursorChart.LowCursorValueChanged += new System.EventHandler(this.tofCursorChart_LowCursorValueChanged);
+            this.tofCursorChart.HighCursorValueChanged += new System.EventHandler(this.tofCursorChart_HighCursorValueChanged);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.analog1Graph);
@@ -431,6 +451,8 @@ namespace ScanMaster.GUI
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.numberOfScansTextBox);
             this.groupBox3.Controls.Add(this.noiseResultsLabel);
             this.groupBox3.Controls.Add(this.spectrumFitModeCombo);
             this.groupBox3.Controls.Add(this.label2);
@@ -453,6 +475,23 @@ namespace ScanMaster.GUI
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Fitting";
             // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(863, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 16);
+            this.label4.TabIndex = 67;
+            this.label4.Text = "Number of scans:";
+            // 
+            // numberOfScansTextBox
+            // 
+            this.numberOfScansTextBox.Location = new System.Drawing.Point(866, 35);
+            this.numberOfScansTextBox.Name = "numberOfScansTextBox";
+            this.numberOfScansTextBox.ReadOnly = true;
+            this.numberOfScansTextBox.Size = new System.Drawing.Size(153, 20);
+            this.numberOfScansTextBox.TabIndex = 34;
+            this.numberOfScansTextBox.Text = "0";
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.pmtCursorChart);
@@ -462,6 +501,16 @@ namespace ScanMaster.GUI
             this.groupBox4.TabIndex = 64;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Scan";
+            // 
+            // pmtCursorChart
+            // 
+            this.pmtCursorChart.AutoSize = true;
+            this.pmtCursorChart.Location = new System.Drawing.Point(6, 13);
+            this.pmtCursorChart.Name = "pmtCursorChart";
+            this.pmtCursorChart.Size = new System.Drawing.Size(595, 438);
+            this.pmtCursorChart.TabIndex = 62;
+            this.pmtCursorChart.LowCursorValueChanged += new System.EventHandler(this.pmtCursorChart_LowCursorValueChanged);
+            this.pmtCursorChart.HighCursorValueChanged += new System.EventHandler(this.pmtCursorChart_HighCursorValueChanged);
             // 
             // groupBox5
             // 
@@ -476,7 +525,8 @@ namespace ScanMaster.GUI
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.windowToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1031, 24);
@@ -526,25 +576,28 @@ namespace ScanMaster.GUI
             this.tOFToolStripMenuItem.Name = "tOFToolStripMenuItem";
             this.tOFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             // 
-            // pmtCursorChart
+            // windowToolStripMenuItem
             // 
-            this.pmtCursorChart.AutoSize = true;
-            this.pmtCursorChart.Location = new System.Drawing.Point(6, 13);
-            this.pmtCursorChart.Name = "pmtCursorChart";
-            this.pmtCursorChart.Size = new System.Drawing.Size(595, 438);
-            this.pmtCursorChart.TabIndex = 62;
-            this.pmtCursorChart.LowCursorValueChanged += new System.EventHandler(this.pmtCursorChart_LowCursorValueChanged);
-            this.pmtCursorChart.HighCursorValueChanged += new System.EventHandler(this.pmtCursorChart_HighCursorValueChanged);
+            this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showFFTToolStripMenuItem,
+            this.hideFFTToolStripMenuItem});
+            this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
+            this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.windowToolStripMenuItem.Text = "Window";
             // 
-            // tofCursorChart
+            // showFFTToolStripMenuItem
             // 
-            this.tofCursorChart.AutoSize = true;
-            this.tofCursorChart.Location = new System.Drawing.Point(3, 13);
-            this.tofCursorChart.Name = "tofCursorChart";
-            this.tofCursorChart.Size = new System.Drawing.Size(388, 438);
-            this.tofCursorChart.TabIndex = 62;
-            this.tofCursorChart.LowCursorValueChanged += new System.EventHandler(this.tofCursorChart_LowCursorValueChanged);
-            this.tofCursorChart.HighCursorValueChanged += new System.EventHandler(this.tofCursorChart_HighCursorValueChanged);
+            this.showFFTToolStripMenuItem.Name = "showFFTToolStripMenuItem";
+            this.showFFTToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showFFTToolStripMenuItem.Text = "Show FFT";
+            this.showFFTToolStripMenuItem.Click += new System.EventHandler(this.showFFTToolStripMenuItem_Click);
+            // 
+            // hideFFTToolStripMenuItem
+            // 
+            this.hideFFTToolStripMenuItem.Name = "hideFFTToolStripMenuItem";
+            this.hideFFTToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideFFTToolStripMenuItem.Text = "Hide FFT";
+            this.hideFFTToolStripMenuItem.Click += new System.EventHandler(this.hideFFTToolStripMenuItem_Click);
             // 
             // StandardViewerWindow
             // 
@@ -579,6 +632,7 @@ namespace ScanMaster.GUI
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -982,9 +1036,26 @@ namespace ScanMaster.GUI
 
 
 
+        private delegate void updateNumberOfScansSoFarDelegate(int numberOfScansSoFar);
+        public void UpdateNumberOfScansSoFar(int numberOfScans)
+        {
+            numberOfScansTextBox.Invoke(new updateNumberOfScansSoFarDelegate(changeNumberOfScans), new Object[] { numberOfScans });
+        }
 
+        private void changeNumberOfScans(int numberOfScans)
+        {
+            numberOfScansTextBox.Text = numberOfScans.ToString();
+        }
 
+        private void showFFTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            viewer.StartFFTViewer();
+        }
 
+        private void hideFFTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            viewer.StopFFTViewer();
+        }
 
 
 
