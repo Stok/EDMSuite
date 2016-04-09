@@ -77,6 +77,14 @@ namespace Data.Scans
 			return temp;
 		}
 
+        public double[] GetTOFOnAbsValIntegralArray(int index, double startTime, double endTime)
+        {
+            double[] temp = new double[points.Count];
+            for (int i = 0; i < points.Count; i++) temp[i] =
+                                                       (double)((ScanPoint)points[i]).AbsIntegrateOn(index, startTime, endTime);
+            return temp;
+        }
+
         public double[] GetTOFOnOverShotNoiseArray(int index, double startTime, double endTime)
         {
             double[] tempShot = new double[points.Count];
@@ -105,6 +113,13 @@ namespace Data.Scans
 														 (double)((ScanPoint)points[i]).IntegrateOff(index, startTime, endTime);
 			return temp;
 		}
+        public double[] GetTOFOffAbsValIntegralArray(int index, double startTime, double endTime)
+        {
+            double[] temp = new double[points.Count];
+            for (int i = 0; i < points.Count; i++) temp[i] =
+                                                       (double)((ScanPoint)points[i]).AbsIntegrateOff(index, startTime, endTime);
+            return temp;
+        }
 
 		public double[] GetDifferenceIntegralArray(int index, double startTime, double endTime)
 		{
@@ -114,6 +129,15 @@ namespace Data.Scans
 			for (int i = 0 ; i < points.Count ; i++) temp[i] = on[i] - off[i];
 			return temp;
 		}
+
+        public double[] GetDifferenceAbsValIntegralArray(int index, double startTime, double endTime)
+        {
+            double[] temp = new double[points.Count];
+            double[] on = GetTOFOnAbsValIntegralArray(index, startTime, endTime);
+            double[] off = GetTOFOffAbsValIntegralArray(index, startTime, endTime);
+            for (int i = 0; i < points.Count; i++) temp[i] = on[i] - off[i];
+            return temp;
+        }
 
         public double[] GetMeanOnArray(int index)
         {

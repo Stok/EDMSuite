@@ -47,6 +47,18 @@ namespace ScanMaster.GUI
         private GroupBox groupBox5;
         private TwoCursorChart tofCursorChart;
         private TwoCursorChart pmtCursorChart;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem displayToolStripMenuItem;
+        private ToolStripMenuItem getTofOnOffIntegralArrayToolStripMenuItem;
+        private ToolStripMenuItem tOFToolStripMenuItem;
+        private ToolStripMenuItem integralToolStripMenuItem;
+        private ToolStripMenuItem integralOfAbsValToolStripMenuItem;
+        private TextBox numberOfScansTextBox;
+        private Label label4;
+        private ToolStripMenuItem windowToolStripMenuItem;
+        private ToolStripMenuItem showFFTToolStripMenuItem;
+        private ToolStripMenuItem hideFFTToolStripMenuItem;
         private Chart analog1Graph;
 
 		public StandardViewerWindow(StandardViewer viewer)
@@ -106,12 +118,24 @@ namespace ScanMaster.GUI
             this.analog2Graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.differenceGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tofCursorChart = new ScanMaster.GUI.TwoCursorChart();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numberOfScansTextBox = new System.Windows.Forms.TextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.pmtCursorChart = new ScanMaster.GUI.TwoCursorChart();
-            this.tofCursorChart = new ScanMaster.GUI.TwoCursorChart();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.integralToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.integralOfAbsValToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getTofOnOffIntegralArrayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tOFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showFFTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideFFTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -128,6 +152,7 @@ namespace ScanMaster.GUI
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tofFitModeCombo
@@ -245,7 +270,7 @@ namespace ScanMaster.GUI
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 868);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 910);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -360,7 +385,7 @@ namespace ScanMaster.GUI
             chartArea2.Name = "ChartArea1";
             this.analog2Graph.ChartAreas.Add(chartArea2);
             this.analog2Graph.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.analog2Graph.Location = new System.Drawing.Point(3, 165);
+            this.analog2Graph.Location = new System.Drawing.Point(3, 166);
             this.analog2Graph.Name = "analog2Graph";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
@@ -379,7 +404,7 @@ namespace ScanMaster.GUI
             chartArea3.Name = "ChartArea1";
             this.differenceGraph.ChartAreas.Add(chartArea3);
             this.differenceGraph.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.differenceGraph.Location = new System.Drawing.Point(3, 20);
+            this.differenceGraph.Location = new System.Drawing.Point(3, 21);
             this.differenceGraph.Name = "differenceGraph";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
@@ -396,26 +421,38 @@ namespace ScanMaster.GUI
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tofCursorChart);
-            this.groupBox1.Location = new System.Drawing.Point(9, 8);
+            this.groupBox1.Location = new System.Drawing.Point(9, 43);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(403, 463);
+            this.groupBox1.Size = new System.Drawing.Size(403, 464);
             this.groupBox1.TabIndex = 62;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TOF";
+            // 
+            // tofCursorChart
+            // 
+            this.tofCursorChart.AutoSize = true;
+            this.tofCursorChart.Location = new System.Drawing.Point(3, 13);
+            this.tofCursorChart.Name = "tofCursorChart";
+            this.tofCursorChart.Size = new System.Drawing.Size(388, 438);
+            this.tofCursorChart.TabIndex = 62;
+            this.tofCursorChart.LowCursorValueChanged += new System.EventHandler(this.tofCursorChart_LowCursorValueChanged);
+            this.tofCursorChart.HighCursorValueChanged += new System.EventHandler(this.tofCursorChart_HighCursorValueChanged);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.analog1Graph);
             this.groupBox2.Controls.Add(this.analog2Graph);
-            this.groupBox2.Location = new System.Drawing.Point(424, 477);
+            this.groupBox2.Location = new System.Drawing.Point(424, 512);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(604, 317);
+            this.groupBox2.Size = new System.Drawing.Size(604, 318);
             this.groupBox2.TabIndex = 61;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Analog";
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.numberOfScansTextBox);
             this.groupBox3.Controls.Add(this.noiseResultsLabel);
             this.groupBox3.Controls.Add(this.spectrumFitModeCombo);
             this.groupBox3.Controls.Add(this.label2);
@@ -431,67 +468,151 @@ namespace ScanMaster.GUI
             this.groupBox3.Controls.Add(this.tofFitFunctionCombo);
             this.groupBox3.Controls.Add(this.tofFitModeCombo);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(0, 798);
+            this.groupBox3.Location = new System.Drawing.Point(0, 840);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(1031, 70);
             this.groupBox3.TabIndex = 63;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Fitting";
             // 
+            // label4
+            // 
+            this.label4.Location = new System.Drawing.Point(863, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 16);
+            this.label4.TabIndex = 67;
+            this.label4.Text = "Number of scans:";
+            // 
+            // numberOfScansTextBox
+            // 
+            this.numberOfScansTextBox.Location = new System.Drawing.Point(866, 35);
+            this.numberOfScansTextBox.Name = "numberOfScansTextBox";
+            this.numberOfScansTextBox.ReadOnly = true;
+            this.numberOfScansTextBox.Size = new System.Drawing.Size(153, 20);
+            this.numberOfScansTextBox.TabIndex = 34;
+            this.numberOfScansTextBox.Text = "0";
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.pmtCursorChart);
-            this.groupBox4.Location = new System.Drawing.Point(424, 8);
+            this.groupBox4.Location = new System.Drawing.Point(424, 43);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(604, 463);
+            this.groupBox4.Size = new System.Drawing.Size(604, 464);
             this.groupBox4.TabIndex = 64;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Scan";
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.differenceGraph);
-            this.groupBox5.Location = new System.Drawing.Point(9, 477);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(403, 317);
-            this.groupBox5.TabIndex = 65;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Difference";
-            // 
             // pmtCursorChart
             // 
-            //this.pmtCursorChart.HighCursorValue = (int)tofCursorChart.GetChartRangeMax();
+            this.pmtCursorChart.AutoSize = true;
             this.pmtCursorChart.Location = new System.Drawing.Point(6, 13);
-            //this.pmtCursorChart.LowCursorValue = (int)tofCursorChart.GetChartRangeMin();
             this.pmtCursorChart.Name = "pmtCursorChart";
             this.pmtCursorChart.Size = new System.Drawing.Size(595, 438);
             this.pmtCursorChart.TabIndex = 62;
             this.pmtCursorChart.LowCursorValueChanged += new System.EventHandler(this.pmtCursorChart_LowCursorValueChanged);
             this.pmtCursorChart.HighCursorValueChanged += new System.EventHandler(this.pmtCursorChart_HighCursorValueChanged);
             // 
-            // tofCursorChart
+            // groupBox5
             // 
-            //this.tofCursorChart.HighCursorValue = (int)tofCursorChart.GetChartRangeMax();
-            this.tofCursorChart.Location = new System.Drawing.Point(3, 13);
-            //this.tofCursorChart.LowCursorValue = (int)tofCursorChart.GetChartRangeMin();
-            this.tofCursorChart.Name = "tofCursorChart";
-            this.tofCursorChart.Size = new System.Drawing.Size(388, 438);
-            this.tofCursorChart.TabIndex = 62;
-            this.tofCursorChart.LowCursorValueChanged += new System.EventHandler(this.tofCursorChart_LowCursorValueChanged);
-            this.tofCursorChart.HighCursorValueChanged += new System.EventHandler(this.tofCursorChart_HighCursorValueChanged);
+            this.groupBox5.Controls.Add(this.differenceGraph);
+            this.groupBox5.Location = new System.Drawing.Point(9, 512);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(403, 318);
+            this.groupBox5.TabIndex = 65;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Difference";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem,
+            this.windowToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1031, 24);
+            this.menuStrip1.TabIndex = 66;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.displayToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // displayToolStripMenuItem
+            // 
+            this.displayToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.integralToolStripMenuItem,
+            this.integralOfAbsValToolStripMenuItem});
+            this.displayToolStripMenuItem.Name = "displayToolStripMenuItem";
+            this.displayToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.displayToolStripMenuItem.Text = "Scan Display Mode";
+            // 
+            // integralToolStripMenuItem
+            // 
+            this.integralToolStripMenuItem.Checked = true;
+            this.integralToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.integralToolStripMenuItem.Name = "integralToolStripMenuItem";
+            this.integralToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.integralToolStripMenuItem.Text = "Integral";
+            this.integralToolStripMenuItem.Click += new System.EventHandler(this.integralToolStripMenuItem_Click);
+            // 
+            // integralOfAbsValToolStripMenuItem
+            // 
+            this.integralOfAbsValToolStripMenuItem.Name = "integralOfAbsValToolStripMenuItem";
+            this.integralOfAbsValToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.integralOfAbsValToolStripMenuItem.Text = "Integral of abs val";
+            this.integralOfAbsValToolStripMenuItem.Click += new System.EventHandler(this.integralOfAbsValToolStripMenuItem_Click);
+            // 
+            // getTofOnOffIntegralArrayToolStripMenuItem
+            // 
+            this.getTofOnOffIntegralArrayToolStripMenuItem.Name = "getTofOnOffIntegralArrayToolStripMenuItem";
+            this.getTofOnOffIntegralArrayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            // 
+            // tOFToolStripMenuItem
+            // 
+            this.tOFToolStripMenuItem.Name = "tOFToolStripMenuItem";
+            this.tOFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            // 
+            // windowToolStripMenuItem
+            // 
+            this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showFFTToolStripMenuItem,
+            this.hideFFTToolStripMenuItem});
+            this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
+            this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.windowToolStripMenuItem.Text = "Window";
+            // 
+            // showFFTToolStripMenuItem
+            // 
+            this.showFFTToolStripMenuItem.Name = "showFFTToolStripMenuItem";
+            this.showFFTToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showFFTToolStripMenuItem.Text = "Show FFT";
+            this.showFFTToolStripMenuItem.Click += new System.EventHandler(this.showFFTToolStripMenuItem_Click);
+            // 
+            // hideFFTToolStripMenuItem
+            // 
+            this.hideFFTToolStripMenuItem.Name = "hideFFTToolStripMenuItem";
+            this.hideFFTToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hideFFTToolStripMenuItem.Text = "Hide FFT";
+            this.hideFFTToolStripMenuItem.Click += new System.EventHandler(this.hideFFTToolStripMenuItem_Click);
             // 
             // StandardViewerWindow
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(1031, 891);
+            this.ClientSize = new System.Drawing.Size(1031, 933);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "StandardViewerWindow";
             this.Text = "Standard View";
@@ -511,10 +632,14 @@ namespace ScanMaster.GUI
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -611,7 +736,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                pmtCursorChart.SetChartAxes(value);
+                pmtCursorChart.InitializeTwoCursorChart(value, false);
 				SetGraphXAxisRange(differenceGraph, value);
 				SetGraphXAxisRange(analog1Graph, value);
 				SetGraphXAxisRange(analog2Graph, value);
@@ -622,7 +747,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                pmtCursorChart.SetChartAxesAndGate(value);
+                pmtCursorChart.InitializeTwoCursorChart(value, false);
 				MoveLowCursor(pmtCursorChart, value.Minimum);
 				MoveHighCursor(pmtCursorChart, value.Maximum);
 			}
@@ -638,7 +763,7 @@ namespace ScanMaster.GUI
 		{
 			set
 			{
-                tofCursorChart.SetChartAxesAndGate(value);
+                tofCursorChart.InitializeTwoCursorChart(value, true);
 			}
 			get
 			{
@@ -670,7 +795,6 @@ namespace ScanMaster.GUI
 		}
 		public void AppendToPMTOn(double[] x, double[] y)
 		{
-            Series a = pmtCursorChart.GetSeriesByName("onPlot");
             pmtCursorChart.PlotXYAppend(pmtCursorChart.GetSeriesByName("onPlot"), x, y);
 		}
 		public void AppendToPMTOff(double[] x, double[] y)
@@ -773,7 +897,7 @@ namespace ScanMaster.GUI
                 plot.Sort(PointSortOrder.Ascending, "X");
             }
         }
-
+        
         private delegate void plotSeriesDelegate(Series plot,
           double[] x, double[] y);
         private void plotSeriesHelper(Series plot,
@@ -789,7 +913,7 @@ namespace ScanMaster.GUI
         {
             figure.Invoke(new plotSeriesDelegate(plotSeriesHelper), new object[] { plot, x, y });
         }
-
+        
 
 
 
@@ -896,10 +1020,42 @@ namespace ScanMaster.GUI
             viewer.UpdateNoiseResults();
         }
 
+        private void integralToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            integralToolStripMenuItem.Checked = true;
+            integralOfAbsValToolStripMenuItem.Checked = false;
+            viewer.ScanDisplayModeChanged(0);
+        }
+
+        private void integralOfAbsValToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            integralToolStripMenuItem.Checked = false;
+            integralOfAbsValToolStripMenuItem.Checked = true;
+            viewer.ScanDisplayModeChanged(1);
+        }
 
 
 
+        private delegate void updateNumberOfScansSoFarDelegate(int numberOfScansSoFar);
+        public void UpdateNumberOfScansSoFar(int numberOfScans)
+        {
+            numberOfScansTextBox.Invoke(new updateNumberOfScansSoFarDelegate(changeNumberOfScans), new Object[] { numberOfScans });
+        }
 
+        private void changeNumberOfScans(int numberOfScans)
+        {
+            numberOfScansTextBox.Text = numberOfScans.ToString();
+        }
+
+        private void showFFTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            viewer.StartFFTViewer();
+        }
+
+        private void hideFFTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            viewer.StopFFTViewer();
+        }
 
 
 

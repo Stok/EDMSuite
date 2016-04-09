@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 using DAQ.NIScope;
 
 using Data;
@@ -14,8 +15,7 @@ namespace ScanMaster.Acquire.Plugin
     {
         [NonSerialized]
         private NIScopeControllable scope;
-        [NonSerialized]
-        private double[,] latestData;
+
         public override void ArmAndWait()
         {
             scope.ArmAndWait();
@@ -27,17 +27,11 @@ namespace ScanMaster.Acquire.Plugin
             { 
                 lock(this)
                 {
-                    latestData = scope.GetShot();
                     Data.Shot s = new Data.Shot();
                     Data.TOF t = new TOF();
                     t.ClockPeriod = (int)settings["clockPeriod"];
                     t.GateStartTime = (int)settings["gateStartTime"];
-                    double[] tempD = new double[latestData.GetLength(0)];
-                    for(int i = 0; i< tempD.Length; i++)
-                    {
-                        tempD[i] = latestData[i, 1];
-                    }
-                    t.Data = tempD;
+                    t.Data = scope.GetShot();
                     s.TOFs.Add(t);
                     return s;
                 }

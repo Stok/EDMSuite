@@ -17,12 +17,34 @@ namespace ScanMaster.GUI
     public partial class TwoCursorChart : UserControl
     {
         public event EventHandler LowCursorValueChanged, HighCursorValueChanged;
-        private PlotParameters xRange, yRange;
-        
+        //private PlotParameters xRange, yRange;
+        int numberOfPoints;
+        double Xmin, Xmax;
         public TwoCursorChart()
         {
             InitializeComponent();
-            yRange = new PlotParameters(0, 1); //set to avoid crashes that happen when plot range = 0
+        }
+        private delegate void setChartRangeDelegate(PlotParameters x, bool resetCursorsQ);
+        public void InitializeTwoCursorChart(PlotParameters x, bool resetCursorsQ)
+        {
+            chart.Invoke(new setChartRangeDelegate(initialize), new Object[] { x, resetCursorsQ });
+        }
+        private void initialize(PlotParameters p, bool resetCursorsQ)
+        {
+            this.numberOfPoints = p.PointsPerRange;
+            this.Xmin = p.Minimum;
+            this.Xmax = p.Maximum;
+            chart.ChartAreas[0].AxisX.Minimum = Xmin;
+            chart.ChartAreas[0].AxisX.Maximum = Xmax;
+            lowTrackBar.Minimum = (int)Math.Round(Xmin);
+            lowTrackBar.Maximum = (int)Math.Round(Xmax);
+            highTrackBar.Minimum = (int)Math.Round(Xmin);
+            highTrackBar.Maximum = (int)Math.Round(Xmax);
+            if (resetCursorsQ)
+            {
+                lowTrackBar.Value = 0;
+                highTrackBar.Value = highTrackBar.Maximum;
+            }
         }
 
         internal Series GetSeriesByName(string name)
@@ -35,8 +57,9 @@ namespace ScanMaster.GUI
             lock (this)
             {
                 this.GetSeriesByName("lowCursor").Points.Clear();
-                this.GetSeriesByName("lowCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Minimum + 1);
-                this.GetSeriesByName("lowCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Maximum - 1);
+                chart.ChartAreas[0].RecalculateAxesScale();
+                this.GetSeriesByName("lowCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Minimum);
+                this.GetSeriesByName("lowCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Maximum);
             }
         }
         public void UpdateLowCursorPosition(double x)
@@ -49,8 +72,9 @@ namespace ScanMaster.GUI
             lock (this)
             {
                 this.GetSeriesByName("highCursor").Points.Clear();
-                this.GetSeriesByName("highCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Minimum + 1);
-                this.GetSeriesByName("highCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Maximum - 1);
+                chart.ChartAreas[0].RecalculateAxesScale();
+                this.GetSeriesByName("highCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Minimum);
+                this.GetSeriesByName("highCursor").Points.AddXY(x, chart.ChartAreas[0].AxisY.Maximum);
             }
         }
         public void UpdateHighCursorPosition(double x)
@@ -88,8 +112,7 @@ namespace ScanMaster.GUI
         }
         private double getLowCursorValueHelper()
         {
-            double newValue =  (lowTrackBar.Value / (double)xRange.PointsPerRange) * xRange.GetInterval() + xRange.Minimum;
-            return newValue;
+            return lowTrackBar.Value;
         }
         public double GetHighCursorValue()
         {
@@ -97,77 +120,10 @@ namespace ScanMaster.GUI
         }
         private double getHighCursorValueHelper()
         {
-            return (highTrackBar.Value / (double)xRange.PointsPerRange) * xRange.GetInterval() + xRange.Minimum;
+            return highTrackBar.Value;
         }
         #endregion
 
-        private delegate void setChartRangeDelegate(PlotParameters x);
-        private void setChartAxesAndGateHelper(PlotParameters x)
-        {
-            setChartAxesHelper(x);
-            setChartGateHelper(x);
-        }
-        private void setChartAxesHelper(PlotParameters x)
-        {
-            xRange = x;
-            chart.ChartAreas[0].AxisX.Minimum = x.Minimum;
-            chart.ChartAreas[0].AxisX.Maximum = x.Maximum;
-        }
-        private void setChartGateHelper(PlotParameters x)
-        {
-            lowTrackBar.Minimum = 0;
-            lowTrackBar.Maximum = x.PointsPerRange;
-            lowTrackBar.Value = 0;
-            highTrackBar.Minimum = 0;
-            highTrackBar.Maximum = x.PointsPerRange;
-            highTrackBar.Value = highTrackBar.Maximum;
-        }
-        public void SetChartAxesAndGate(PlotParameters x)
-        {
-            chart.Invoke(new setChartRangeDelegate(setChartAxesAndGateHelper), new Object[] { x }); 
-        }
-        public void SetChartAxes(PlotParameters x)
-        {
-            chart.Invoke(new setChartRangeDelegate(setChartAxesHelper), new Object[] { x });
-        }
-        public void SetChartGate(PlotParameters x)
-        {
-            chart.Invoke(new setChartRangeDelegate(setChartGateHelper), new Object[] { x });
-        }
-
-        #region resetting axes
-        
-        public void ResetYAxesScale()
-        {
-            PlotParameters y = getExtremeYValueInPlot();
-            chart.ChartAreas[0].AxisY.Minimum = Math.Round(y.Minimum - y.GetInterval() / 50.0, 2);
-            chart.ChartAreas[0].AxisY.Maximum = Math.Round(y.Maximum + y.GetInterval() / 50.0, 2);
-            yRange = y;
-        }
-        private PlotParameters getExtremeYValueInPlot()
-        {
-            double? maxOfSeries, minOfSeries, maxOfChart = null, minOfChart = null;          
-            for (int i = 0; i < 5; i++)
-            {
-                if (chart.Series[i].Points.Count > 1)
-                {
-                    maxOfSeries = chart.Series[i].Points.FindMaxByValue("Y1").YValues[0];
-                    minOfSeries = chart.Series[i].Points.FindMinByValue("Y1").YValues[0];
-                }
-                else { maxOfSeries = null; minOfSeries = null; }
-                if (maxOfSeries > maxOfChart || maxOfChart == null)
-                {
-                    maxOfChart = maxOfSeries;
-                }
-                if (minOfSeries < minOfChart || minOfChart == null)
-                {
-                    minOfChart = minOfSeries;
-                }
-            }
-            return new PlotParameters((double)minOfChart, (double)maxOfChart);
-        }
-        
-        #endregion
 
         #region Plotting and clearing points
 
@@ -207,15 +163,29 @@ namespace ScanMaster.GUI
         {
             lock (this)
             {
-                if(chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
+                double[] xToPlot, yToPlot;
+                if (x.Length < 200)
                 {
-                    ResetYAxesScale();
+                    xToPlot = x;
+                    yToPlot = y;
                 }
-                for (int i = 0; i < x.Length; i++)
+                else
                 {
-                    s.Points.AddXY(x[i], y[i]);
+                    xToPlot = new double[200];
+                    yToPlot = new double[200];
+                    int interval =(int)Math.Floor((double)x.Length / 200.0);
+                    for(int i = 0; i < 200; i++)
+                    {
+                        xToPlot[i] = x[i * interval];
+                        yToPlot[i] = y[i * interval];
+                    }
+                }
+                for (int i = 0; i < xToPlot.Length; i++)
+                {
+                    s.Points.AddXY(xToPlot[i], yToPlot[i]);
                 }
                 s.Sort(PointSortOrder.Ascending, "X");
+                chart.ChartAreas[0].RecalculateAxesScale();
             }
         }
 
@@ -237,13 +207,7 @@ namespace ScanMaster.GUI
             {
                 xValues[i] = start + inc * i;
             }
-            chart.ChartAreas[0].AxisX.Minimum = start;
-            chart.ChartAreas[0].AxisX.Maximum = xValues[xValues.Length - 1];
-            PlotXY(series, xValues, ydata);
-            if (chart.Series[0].Points.Count > 1) //Prevent plot range = 0 bugs
-            {
-                ResetYAxesScale();
-            }
+                PlotXY(series, xValues, ydata);
         }
 
         #endregion

@@ -21,6 +21,9 @@ namespace ScanMaster.GUI
 		// viewer support
 		private StandardViewerWindow window;
 		private bool visible;
+        
+        //just for displaying the number of scans
+        private int numberOfScansSoFar = 0;
 
 		// stuff used for displaying the scans
 		Scan pointsToPlot = new Scan();
@@ -46,6 +49,14 @@ namespace ScanMaster.GUI
         double OverShotNoise1;
         double OverShotNoise01;
 
+
+        //FFT window
+        FFTViewer fftviewer;
+        bool fftviewerIsOpen = false;
+        // spectrum display mode
+
+        enum ScanDisplayMode { Integral, IofAbs};
+        ScanDisplayMode sdisplayMode = ScanDisplayMode.Integral;
 
 		public String Name
 		{
@@ -94,6 +105,8 @@ namespace ScanMaster.GUI
 
 		public void AcquireStart()
 		{
+            numberOfScansSoFar = 0;
+
 			// clear the stored data
 			pointsToPlot.Points.Clear();
 			// grab the latest settings
@@ -219,17 +232,38 @@ namespace ScanMaster.GUI
 				    window.AppendToAnalog1(pointsToPlot.ScanParameterArray, pointsToPlot.GetAnalogArray(0));
                 if (pointsToPlot.AnalogChannelCount >= 2) 
                     window.AppendToAnalog2(pointsToPlot.ScanParameterArray, pointsToPlot.GetAnalogArray(1));
-				window.AppendToPMTOn(pointsToPlot.ScanParameterArray,
-					pointsToPlot.GetTOFOnIntegralArray(0,
-					startTOFGate, endTOFGate));
+                if (sdisplayMode == ScanDisplayMode.Integral)
+                {
+                    window.AppendToPMTOn(pointsToPlot.ScanParameterArray,
+                    pointsToPlot.GetTOFOnIntegralArray(0,
+                    startTOFGate, endTOFGate));
+                }
+                if (sdisplayMode == ScanDisplayMode.IofAbs)
+                {
+                    window.AppendToPMTOn(pointsToPlot.ScanParameterArray,
+                    pointsToPlot.GetTOFOnAbsValIntegralArray(0,
+                    startTOFGate, endTOFGate));
+                }
 				if ((bool)currentProfile.AcquisitorConfig.switchPlugin.Settings["switchActive"])
 				{
-					window.AppendToPMTOff(pointsToPlot.ScanParameterArray,
-						pointsToPlot.GetTOFOffIntegralArray(0,
-						startTOFGate, endTOFGate));
-					window.AppendToDifference(pointsToPlot.ScanParameterArray,
-						pointsToPlot.GetDifferenceIntegralArray(0,
-						startTOFGate, endTOFGate));
+                    if (sdisplayMode == ScanDisplayMode.Integral)
+                    {
+                        window.AppendToPMTOff(pointsToPlot.ScanParameterArray,
+                        pointsToPlot.GetTOFOffIntegralArray(0,
+                        startTOFGate, endTOFGate));
+                        window.AppendToDifference(pointsToPlot.ScanParameterArray,
+                            pointsToPlot.GetDifferenceIntegralArray(0,
+                            startTOFGate, endTOFGate));
+                    }
+                    if (sdisplayMode == ScanDisplayMode.IofAbs)
+                    {
+                        window.AppendToPMTOff(pointsToPlot.ScanParameterArray,
+                        pointsToPlot.GetTOFOffAbsValIntegralArray(0,
+                        startTOFGate, endTOFGate));
+                        window.AppendToDifference(pointsToPlot.ScanParameterArray,
+                            pointsToPlot.GetDifferenceAbsValIntegralArray(0,
+                            startTOFGate, endTOFGate));
+                    }
 				}
                 // update the spectrum fit if in shot mode.
                 if (spectrumFitMode == FitMode.Shot)
@@ -291,6 +325,10 @@ namespace ScanMaster.GUI
 			// clear the realtime spectra
 			pointsToPlot.Points.Clear();
 			window.ClearRealtimeSpectra();
+            numberOfScansSoFar++;
+            window.UpdateNumberOfScansSoFar(numberOfScansSoFar);
+
+
 		}
 
 		private void FitAverageTOF()
@@ -462,6 +500,11 @@ namespace ScanMaster.GUI
 				window.PlotAverageOffTOF(
 					(TOF)averageScan.GetGatedAverageOffShot(startSpectrumGate, endSpectrumGate).TOFs[0]);
 			}
+            if(fftviewerIsOpen)
+            {
+                fftviewer.PlotFFT(tof.Data,
+                   (int)p.AcquisitorConfig.shotGathererPlugin.Settings["gateLength"], (int)p.AcquisitorConfig.shotGathererPlugin.Settings["sampleRate"]);
+            }
 		}
 
 		private void UpdatePMTAveragePlots()
@@ -470,21 +513,46 @@ namespace ScanMaster.GUI
 			if (averageScan.Points.Count == 0) return;
             window.SpectrumAxes = new PlotParameters(averageScan.MinimumScanParameter,
                  averageScan.MaximumScanParameter, averageScan.Points.Count);
-			window.PlotAveragePMTOn(averageScan.ScanParameterArray,
-				averageScan.GetTOFOnIntegralArray(0,
-				startTOFGate, endTOFGate));
-			Profile p = Controller.GetController().ProfileManager.CurrentProfile;
-			if (p != null && (bool)p.AcquisitorConfig.switchPlugin.Settings["switchActive"]) 
-			{
-				window.PlotAveragePMTOff(averageScan.ScanParameterArray,
-					averageScan.GetTOFOffIntegralArray(0,
-					startTOFGate, endTOFGate));
-				window.PlotAverageDifference(averageScan.ScanParameterArray,
-					averageScan.GetDifferenceIntegralArray(0,
-					startTOFGate, endTOFGate));
-			}
+            if (sdisplayMode == ScanDisplayMode.Integral)
+            {
+                window.PlotAveragePMTOn(averageScan.ScanParameterArray,
+                    averageScan.GetTOFOnIntegralArray(0,
+                    startTOFGate, endTOFGate));
+                Profile p = Controller.GetController().ProfileManager.CurrentProfile;
+                if (p != null && (bool)p.AcquisitorConfig.switchPlugin.Settings["switchActive"])
+                {
+                    window.PlotAveragePMTOff(averageScan.ScanParameterArray,
+                        averageScan.GetTOFOffIntegralArray(0,
+                        startTOFGate, endTOFGate));
+                    window.PlotAverageDifference(averageScan.ScanParameterArray,
+                        averageScan.GetDifferenceIntegralArray(0,
+                        startTOFGate, endTOFGate));
+                }
+            }
+            if (sdisplayMode == ScanDisplayMode.IofAbs)
+            {
+                window.PlotAveragePMTOn(averageScan.ScanParameterArray,
+                    averageScan.GetTOFOnAbsValIntegralArray(0,
+                    startTOFGate, endTOFGate));
+                Profile p = Controller.GetController().ProfileManager.CurrentProfile;
+                if (p != null && (bool)p.AcquisitorConfig.switchPlugin.Settings["switchActive"])
+                {
+                    window.PlotAveragePMTOff(averageScan.ScanParameterArray,
+                        averageScan.GetTOFOffAbsValIntegralArray(0,
+                        startTOFGate, endTOFGate));
+                    window.PlotAverageDifference(averageScan.ScanParameterArray,
+                        averageScan.GetDifferenceAbsValIntegralArray(0,
+                        startTOFGate, endTOFGate));
+                }
+            }
 		}
 
+        public void ScanDisplayModeChanged(int index)
+        {
+            UpdateScanDisplayMode(ref sdisplayMode, index);
+            window.ClearSpectra();
+            window.ClearRealtimeSpectra();
+        }
 		public void TOFFitModeChanged(int index)
 		{
 			UpdateFitMode(ref tofFitMode, index);
@@ -509,6 +577,19 @@ namespace ScanMaster.GUI
 					break;
                 case 2:
 					f = FitMode.Shot;
+                    break;
+            }
+        }
+
+        private void UpdateScanDisplayMode(ref ScanDisplayMode sd, int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    sd = ScanDisplayMode.Integral;
+                    break;
+                case 1:
+                    sd = ScanDisplayMode.IofAbs;
                     break;
             }
         }
@@ -554,6 +635,19 @@ namespace ScanMaster.GUI
             window.TOFGate = new PlotParameters(defaultGate[0] - defaultGate[1],defaultGate[0] + defaultGate[1]);
             TOFCursorMoved();
             }
+        }
+
+
+        internal void StartFFTViewer()
+        {
+            fftviewer = new FFTViewer();
+            fftviewerIsOpen = true;
+        }
+
+        internal void StopFFTViewer()
+        {
+            fftviewer.Close();
+            fftviewerIsOpen = false;
         }
 	}
 }

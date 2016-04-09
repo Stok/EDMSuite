@@ -16,42 +16,53 @@ namespace ParityHardwareControl
     public class NIScopeControlHelper : NIScopeControllable
     {
         NIScope scopeSession;
-        double[,] shot;
         long recordLength;
-        double sampleRate, referencePosition, range;
-        int numberOfPoints, numberOfRecords;
         PrecisionTimeSpan timeout;
         AnalogWaveformCollection<double> waveforms;
         ModularInstrumentsSystem scopeDevices;
         string scopeName, channelName;
-
+        ScopeWaveformInfo[] waveformInfo;
 
        
         void DriverOperation_Warning(object sender, ScopeWarningEventArgs e)
         {
             MessageBox.Show(e.Text, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        public double[,] GetShot()
+        public double[] GetShot()
         {
+            int numberOfWaveforms = waveforms.Count();
             double[] data = waveforms[0].GetRawData();
-            shot = new double[data.Length,2];
-            for (int i = 0; i < data.Length; i++)
+            double[] tempData = waveforms[0].GetRawData();
+            for (int i = 1; i < numberOfWaveforms; i++ )
             {
-                shot[i, 0] = i;//* timeInterval + startTime;
-                shot[i, 1] = data[i];
+                tempData = waveforms[i].GetRawData();
+                for(int j = 0; j < data.Length; j++)
+                {
+                    data[j] += tempData[j]; 
+                }
             }
-            return shot;
+            for (int j = 0; j < data.Length; j++)
+            {
+                data[j] = data[j] / numberOfWaveforms;
+            }
+                //return waveforms[0].GetRawData();
+            return data;
         }
-
         public void ArmAndWait()
         {
-            try
+            lock (this)
             {
-                waveforms = scopeSession.Channels[channelName].Measurement.Read(timeout, recordLength, waveforms);
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex);
+                try
+                {
+                    
+                    //waveforms = scopeSession.Channels[channelName].Measurement.Read(timeout, recordLength, waveforms);
+                    waveforms = scopeSession.Channels[channelName].Measurement.FetchDouble(timeout, recordLength, waveforms, out waveformInfo);
+                    scopeSession.Measurement.Initiate();
+                }
+                catch (Exception ex)
+                {
+                    ShowError(ex);
+                }
             }
             
         }
@@ -73,14 +84,14 @@ namespace ParityHardwareControl
                 double probeAttenuation = 1.0;
                 scopeSession.Channels[channelName].Configure(range, offset, coupling, probeAttenuation, true);
 
-
+//                scopeSession.Channels[channelName]
 
                 bool enforceRealtime = true;
 
                 scopeSession.Timing.ConfigureTiming
                     (sampleRate, numberOfPoints, referencePosition, numberOfRecords, enforceRealtime);
 
-                double triggerLevel = 0.0;
+                double triggerLevel = 1.6;
                 ScopeTriggerSlope triggerSlope = ScopeTriggerSlope.Positive;
                 ScopeTriggerCoupling triggerCoupling = ScopeTriggerCoupling.DC;
                 PrecisionTimeSpan triggerHoldoff = PrecisionTimeSpan.Zero;
@@ -114,11 +125,13 @@ namespace ParityHardwareControl
 
         public void StartScan()
         {
+
             //throw new NotImplementedException();
         }
 
         public void FinishScan()
         {
+
             //throw new NotImplementedException();
         }
 
