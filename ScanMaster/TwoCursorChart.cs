@@ -123,7 +123,6 @@ namespace ScanMaster.GUI
             return highTrackBar.Value;
         }
         #endregion
-        
 
 
         #region Plotting and clearing points
